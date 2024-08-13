@@ -1,4 +1,6 @@
 import { postRouter } from "@/server/api/routers/post";
+import { audibleRouter } from "@/server/api/routers/audible";
+
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 
 /**
@@ -8,6 +10,7 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   post: postRouter,
+  audible: audibleRouter,
 });
 
 // export type definition of API
