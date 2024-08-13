@@ -12,6 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import React from "react";
+import { Button } from "@/components/ui/button";
 
 type LibraryItem = inferRouterOutputs<AppRouter>["audible"]["getLibrary"][0];
 
@@ -28,8 +30,13 @@ function LibraryRow(params: { book: LibraryItem }) {
 export default function Home() {
   const library = api.audible.getLibrary.useQuery();
 
+  const doRefresh = api.audible.doLibraryRefresh.useQuery(undefined, {
+    enabled: false,
+  });
+
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+      <Button onClick={() => doRefresh.refetch()}>Trigger refresh</Button>
       {library.isLoading && <span>Loading</span>}
       {library.isSuccess && (
         <Table>

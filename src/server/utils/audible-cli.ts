@@ -60,7 +60,7 @@ function getVoucherFileInfo(filename: string): VoucherFile {
   return JSON.parse(file) as VoucherFile;
 }
 
-function convertAaxc(
+export function convertAaxc(
   inputFilename: string,
   voucherFilename: string,
   outputFilename: string,
@@ -102,7 +102,7 @@ function convertAaxc(
   });
 }
 
-function convertAax(
+export function convertAax(
   inputFilename: string,
   outputFilename: string,
   activationBytes: string,
@@ -136,7 +136,7 @@ function convertAax(
   });
 }
 
-function ffprobe(filename: string): Promise<FfprobeData> {
+export function ffprobe(filename: string): Promise<FfprobeData> {
   return new Promise((resolve, reject) => {
     ffmpeg.ffprobe(filename, (err, metadata) => {
       if (err) {

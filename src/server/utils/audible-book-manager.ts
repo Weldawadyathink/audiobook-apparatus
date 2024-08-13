@@ -1,7 +1,7 @@
-import { downloadItem, getLibrary } from "@/server/utils/audible-cli";
+import { getLibrary } from "@/server/utils/audible-cli";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { and, eq, isNotNull, isNull, ne } from "drizzle-orm";
+import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { fetcher } from "itty-fetcher";
 
 async function reindexAudibleData() {

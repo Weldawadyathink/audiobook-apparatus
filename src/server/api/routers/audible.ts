@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
@@ -15,6 +14,10 @@ export const audibleRouter = createTRPCRouter({
         imageUrl: book.imageUrl,
       })
       .from(book);
+  }),
+  doLibraryRefresh: publicProcedure.query(() => {
+    console.log("--------- Running library refresh ---------");
+    return "--------- Running library refresh ---------";
   }),
   // processItem: publicProcedure.input(z.string()).query(({ input }) => {
   //   downloadItem(input, (p) => console.log(p))
