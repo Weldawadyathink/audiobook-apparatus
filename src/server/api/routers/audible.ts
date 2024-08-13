@@ -1,12 +1,10 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { refreshLibrary } from "@/server/utils/audible-book-manager";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
 
 export const audibleRouter = createTRPCRouter({
   getLibrary: publicProcedure.query(async () => {
-    await refreshLibrary();
     return db
       .select({
         id: book.id,
