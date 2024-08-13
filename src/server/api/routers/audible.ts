@@ -87,7 +87,7 @@ function convertAaxc(
       .outputOption("-codec copy")
       .on("error", (err) => {
         console.log(`Command: ${command}`);
-        console.log("An error occurred: " + err);
+        console.log(`Some error occurred: ${err.message}`);
         reject(err);
       })
       .on("end", () => {
@@ -121,7 +121,8 @@ function convertAax(
       .inputOption(`-activation_bytes ${activationBytes}`)
       .outputOption("-codec copy")
       .on("error", (err) => {
-        console.log("An error occurred: " + err);
+        console.log(`Command: ${command}`);
+        console.log(`Some error occurred: ${err.message}`);
         reject(err);
       })
       .on("end", () => {
@@ -178,20 +179,22 @@ function getLibrary(): Promise<string[]> {
 function downloadItem(
   asin: string,
   progressFunction?: (data: {
-    percent: string | undefined;
+    percent: number;
     downloadSize: string | undefined;
     totalSize: string | undefined;
     speed: string | undefined;
   }) => void,
 ) {
   return new Promise((resolve, reject) => {
-    let percent: string | undefined = undefined;
+    let percent = 0;
     let downloadSize: string | undefined = undefined;
     let totalSize: string | undefined = undefined;
     let speed: string | undefined = undefined;
     let voucherFilename: string | undefined = undefined;
     let filename: string | undefined = undefined;
 
+    const newEnv = process.env;
+    newEnv.PYTHONUNBUFFERED = "true";
     const audible = spawn(
       "audible",
       [
@@ -204,46 +207,55 @@ function downloadItem(
         "--no-confirm",
         "--overwrite",
       ],
-      // TODO Why does JS throw a fit about having this env variable?
-      // @ts-expect-error TS throws a fit about python env variables for some reason
-      { stdio: ["ignore", "pipe", "pipe"], env: { PYTHONUNBUFFERED: "true" } },
+      { stdio: ["ignore", "pipe", "pipe"], env: newEnv },
     );
 
     audible.stdout.on("data", (data) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
-      const voucher = /Voucher file saved to (.*)./.exec(
-        data.toString() as string,
-      );
+      const str = data.toString() as string;
+      const voucher = /Voucher file saved to (.*)./.exec(str);
       if (voucher) {
         voucherFilename = voucher[1];
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
-      const filenameRegex = /File (.*) downloaded in .*/.exec(
-        data.toString() as string,
-      );
+      const filenameRegex = /File (.*) downloaded in .*/.exec(str);
       if (filenameRegex) {
         filename = filenameRegex[1];
       }
     });
 
     audible.stderr.on("data", (data) => {
+      // tqdm prints to stderr for some reason
+
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
       const str: string = data.toString() as string;
-      percent = /(\d{1,3})%\|/.exec(str)?.[1];
-      speed = /[\d.]+.B\/s/.exec(str)?.[0];
+      const newPercentStr = /(\d{1,3})%\|/.exec(str)?.[1];
+      if (!newPercentStr) {
+        return;
+      }
+      const newPercent = parseInt(newPercentStr);
 
-      const downloadSizeRegex = /([\d\.]+.?)\/([\d\.]+.?)/.exec(str);
-      downloadSize = downloadSizeRegex?.[1];
-      totalSize = downloadSizeRegex?.[2];
+      const newSpeed = /[\d.]+.B\/s/.exec(str)?.[0];
+      const downloadSizeRegex = /([\d.]+.?)\/([\d.]+.?)/.exec(str);
+      const newDownloadSize = downloadSizeRegex?.[1];
+      const newTotalSize = downloadSizeRegex?.[2];
 
-      if (progressFunction) {
-        progressFunction({
-          percent: percent,
-          downloadSize: downloadSize,
-          totalSize: totalSize,
-          speed: speed,
-        });
+      if (newPercent > percent) {
+        // prevent out of order message processing
+
+        percent = newPercent;
+        speed = newSpeed;
+        downloadSize = newDownloadSize;
+        totalSize = newTotalSize;
+
+        if (progressFunction) {
+          progressFunction({
+            percent: percent,
+            downloadSize: downloadSize,
+            totalSize: totalSize,
+            speed: speed,
+          });
+        }
       }
     });
 
