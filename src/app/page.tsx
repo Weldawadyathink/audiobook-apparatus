@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { api, HydrateClient } from "@/trpc/server";
-import { Test } from "@/app/_components/Test";
+import { LibraryView } from "@/app/_components/LibraryView";
 
 export default async function Home() {
   return (
@@ -34,8 +34,7 @@ export default async function Home() {
               </div>
             </Link>
           </div>
-          <Test />
-          <div className="flex flex-col items-center gap-2"></div>
+          <LibraryView />
         </div>
       </main>
     </HydrateClient>
