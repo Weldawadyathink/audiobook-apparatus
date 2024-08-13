@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 type LibraryItem = inferRouterOutputs<AppRouter>["audible"]["getLibrary"][0];
 
@@ -40,7 +41,9 @@ export default function Home() {
 
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-      <Button onClick={doRefresh}>Trigger refresh</Button>
+      <Button disabled={refreshApi.isFetching} onClick={doRefresh}>
+        {refreshApi.isFetching ? <LoadingSpinner /> : "Refresh Library"}
+      </Button>
       <span>{refreshApi.isFetching}</span>
       {library.isLoading && <span>Loading</span>}
       {library.isSuccess && (
