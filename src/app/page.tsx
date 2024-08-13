@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { api, HydrateClient } from "@/trpc/server";
-import { LibraryView } from "@/app/_components/LibraryView";
+import { LibraryView } from "@/components/LibraryView";
 
 export default async function Home() {
   return (
