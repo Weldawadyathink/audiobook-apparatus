@@ -11,7 +11,7 @@ export function LibraryView() {
         <div className="flex flex-col items-center gap-2">
           {library.data.map((item) => (
             <p key={item.id}>
-              {item.asin} {item.source} {item.status}
+              {item.asin} {item.source} {item.status} {item.title}
             </p>
           ))}
         </div>

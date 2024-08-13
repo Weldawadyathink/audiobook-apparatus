@@ -13,6 +13,8 @@ export const audibleRouter = createTRPCRouter({
         asin: book.asin,
         source: book.source,
         status: book.status,
+        title: book.title,
+        imageUrl: book.imageUrl,
       })
       .from(book);
   }),
