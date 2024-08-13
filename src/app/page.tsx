@@ -1,42 +1,53 @@
-import Link from "next/link";
-import { api, HydrateClient } from "@/trpc/server";
-import { LibraryView } from "@/components/LibraryView";
+"use client";
 
-export default async function Home() {
+import { api } from "@/trpc/react";
+import type { inferRouterOutputs } from "@trpc/server";
+import { type AppRouter } from "@/server/api/root";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+type LibraryItem = inferRouterOutputs<AppRouter>["audible"]["getLibrary"][0];
+
+function LibraryRow(params: { book: LibraryItem }) {
   return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <LibraryView />
-        </div>
-      </main>
-    </HydrateClient>
+    <TableRow>
+      <TableCell>{params.book.asin}</TableCell>
+      <TableCell>{params.book.title}</TableCell>
+      <TableCell>{params.book.status}</TableCell>
+    </TableRow>
+  );
+}
+
+export default function Home() {
+  const library = api.audible.getLibrary.useQuery();
+
+  return (
+    <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
+      {library.isLoading && <span>Loading</span>}
+      {library.isSuccess && (
+        <Table>
+          <TableCaption>Audible Library</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ASIN</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {library.data.map((item) => (
+              <LibraryRow key={item.id} book={item}></LibraryRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
+    </div>
   );
 }
