@@ -1,13 +1,9 @@
 import Link from "next/link";
 
-import { LatestPost } from "@/app/_components/post";
 import { api, HydrateClient } from "@/trpc/server";
+import { Test } from "@/app/_components/Test";
 
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-
-  const library = await api.audible.libraryList();
-
   return (
     <HydrateClient>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
@@ -39,11 +35,8 @@ export default async function Home() {
               </div>
             </Link>
           </div>
-          <div className="flex flex-col items-center gap-2">
-            {library.map((item, index) => (
-              <span>{item}</span>
-            ))}
-          </div>
+          <Test />
+          <div className="flex flex-col items-center gap-2"></div>
         </div>
       </main>
     </HydrateClient>

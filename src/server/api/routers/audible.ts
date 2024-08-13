@@ -1,6 +1,153 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { spawn } from "node:child_process";
+import fs from "node:fs";
+import ffmpeg, { type FfprobeData } from "fluent-ffmpeg";
+
+interface VoucherFile {
+  content_license: {
+    acr: string;
+    asin: string;
+    content_metadata: {
+      content_reference: {
+        acr: string;
+        asin: string;
+        codec: string;
+        content_format: string;
+        content_size_in_bytes: number;
+        file_version: string;
+        marketplace: string;
+        tempo: string;
+        version: string;
+      };
+      content_url: {
+        offline_url: string;
+      };
+      last_position_heard: {
+        status: string;
+      };
+    };
+    drm_type: string;
+    granted_right: string;
+    license_id: string;
+    license_response: {
+      key: string;
+      iv: string;
+      rules: Array<{
+        name: string;
+        parameters: Array<{
+          expireDate: string;
+          type: string;
+        }>;
+      }>;
+    };
+    license_response_type: string;
+    message: string;
+    playback_info: {
+      last_position_heard: {
+        status: string;
+      };
+    };
+    preview: boolean;
+    request_id: string;
+    requires_ad_supported_playback: boolean;
+    status_code: string;
+    voucher_id: string;
+  };
+  resonse_groups: Array<string>;
+}
+
+function getVoucherFileInfo(filename: string): VoucherFile {
+  const file = fs.readFileSync(filename, "utf8");
+  return JSON.parse(file) as VoucherFile;
+}
+
+function convertAaxc(
+  inputFilename: string,
+  voucherFilename: string,
+  outputFilename: string,
+): Promise<{
+  command: string;
+  inputFilename: string;
+  outputFilename: string;
+  voucherFilename: string;
+  voucherData: VoucherFile;
+}> {
+  return new Promise((resolve, reject) => {
+    let command = "";
+    const voucherData = getVoucherFileInfo(voucherFilename);
+    ffmpeg()
+      .input(inputFilename)
+      .inputOption(
+        `-audible_key ${voucherData.content_license.license_response.key}`,
+      )
+      .inputOption(
+        `-audible_iv ${voucherData.content_license.license_response.iv}`,
+      )
+      .outputOption("-codec copy")
+      .on("error", (err) => {
+        console.log(`Command: ${command}`);
+        console.log("An error occurred: " + err);
+        reject(err);
+      })
+      .on("end", () => {
+        resolve({
+          command: command,
+          inputFilename: inputFilename,
+          outputFilename: outputFilename,
+          voucherFilename: voucherFilename,
+          voucherData: voucherData,
+        });
+      })
+      .on("start", (com) => (command = com))
+      .save(outputFilename);
+  });
+}
+
+function convertAax(
+  inputFilename: string,
+  outputFilename: string,
+  activationBytes: string,
+): Promise<{
+  command: string;
+  activationBytes: string;
+  inputFilename: string;
+  outputFilename: string;
+}> {
+  return new Promise((resolve, reject) => {
+    let command = "";
+    ffmpeg()
+      .input(inputFilename)
+      .inputOption(`-activation_bytes ${activationBytes}`)
+      .outputOption("-codec copy")
+      .on("error", (err) => {
+        console.log("An error occurred: " + err);
+        reject(err);
+      })
+      .on("end", () => {
+        resolve({
+          command: command,
+          activationBytes: activationBytes,
+          inputFilename: inputFilename,
+          outputFilename: outputFilename,
+        });
+      })
+      .on("start", (com) => (command = com))
+      .save(outputFilename);
+  });
+}
+
+function ffprobe(filename: string): Promise<FfprobeData> {
+  return new Promise((resolve, reject) => {
+    ffmpeg.ffprobe(filename, (err, metadata) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(metadata);
+      }
+    });
+  });
+}
 
 function getLibrary(): Promise<string[]> {
   return new Promise((resolve, reject) => {
@@ -28,6 +175,102 @@ function getLibrary(): Promise<string[]> {
   });
 }
 
+function downloadItem(
+  asin: string,
+  progressFunction?: (data: {
+    percent: string | undefined;
+    downloadSize: string | undefined;
+    totalSize: string | undefined;
+    speed: string | undefined;
+  }) => void,
+) {
+  return new Promise((resolve, reject) => {
+    let percent: string | undefined = undefined;
+    let downloadSize: string | undefined = undefined;
+    let totalSize: string | undefined = undefined;
+    let speed: string | undefined = undefined;
+    let voucherFilename: string | undefined = undefined;
+    let filename: string | undefined = undefined;
+
+    const audible = spawn(
+      "audible",
+      [
+        "download",
+        "--asin",
+        asin,
+        "--aax-fallback",
+        "--output-dir",
+        "./tmp",
+        "--no-confirm",
+        "--overwrite",
+      ],
+      // TODO Why does JS throw a fit about having this env variable?
+      // @ts-expect-error TS throws a fit about python env variables for some reason
+      { stdio: ["ignore", "pipe", "pipe"], env: { PYTHONUNBUFFERED: "true" } },
+    );
+
+    audible.stdout.on("data", (data) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+      const voucher = /Voucher file saved to (.*)./.exec(
+        data.toString() as string,
+      );
+      if (voucher) {
+        voucherFilename = voucher[1];
+      }
+
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+      const filenameRegex = /File (.*) downloaded in .*/.exec(
+        data.toString() as string,
+      );
+      if (filenameRegex) {
+        filename = filenameRegex[1];
+      }
+    });
+
+    audible.stderr.on("data", (data) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
+      const str: string = data.toString() as string;
+      percent = /(\d{1,3})%\|/.exec(str)?.[1];
+      speed = /[\d.]+.B\/s/.exec(str)?.[0];
+
+      const downloadSizeRegex = /([\d\.]+.?)\/([\d\.]+.?)/.exec(str);
+      downloadSize = downloadSizeRegex?.[1];
+      totalSize = downloadSizeRegex?.[2];
+
+      if (progressFunction) {
+        progressFunction({
+          percent: percent,
+          downloadSize: downloadSize,
+          totalSize: totalSize,
+          speed: speed,
+        });
+      }
+    });
+
+    audible.on("close", (code) => {
+      if (code == 0) {
+        resolve({
+          percent: percent,
+          downloadSize: downloadSize,
+          totalSize: totalSize,
+          speed: speed,
+          voucherFilename: voucherFilename,
+          filename: filename,
+        });
+      } else {
+        reject(new Error(`Audible-cli exited with code ${code}`));
+      }
+    });
+  });
+}
+
 export const audibleRouter = createTRPCRouter({
   libraryList: publicProcedure.query(getLibrary),
+  processItem: publicProcedure.input(z.string()).query(({ input }) => {
+    const asin = input;
+    downloadItem(asin, (p) => console.log(p))
+      .then(() => console.log("Download complete"))
+      .catch((e) => console.error(e));
+    return "Download started";
+  }),
 });
