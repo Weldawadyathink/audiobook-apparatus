@@ -36,9 +36,10 @@ async function reindexAudibleData() {
     };
   }
 
-  for (const item of results) {
-    api
-      .get(item.asin!)
+  async function updateBook(asin: string, retryNumber = 0) {
+    const maxRetries = 5;
+    await api
+      .get(asin)
       .then(async (response) => {
         const data = response as AudibleCatalogProductResponse;
         const title = data.product.title;
@@ -49,13 +50,25 @@ async function reindexAudibleData() {
             title: title,
             imageUrl: imageUrl,
           })
-          .where(eq(book.asin, item.asin!));
-        return console.log(`Updated data for ${item.asin}`);
+          .where(eq(book.asin, asin));
+        return console.log(`Updated data for ${asin}`);
       })
-      .catch((err) =>
-        console.error(`Error fetching ${item.asin} from audible api: ${err}`),
-      );
+      .catch((error) => {
+        if (retryNumber < maxRetries) {
+          console.log(`Issue with fetching ${asin}, retrying...`);
+          return updateBook(asin, retryNumber + 1);
+        } else {
+          console.log(`Error fetching ${asin} from audible api: ${error}`);
+          throw error;
+        }
+      });
   }
+
+  await Promise.allSettled(
+    results.map((item) => {
+      return updateBook(item.asin!);
+    }),
+  );
 }
 
 export async function refreshLibrary() {

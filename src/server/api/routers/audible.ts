@@ -1,9 +1,10 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
+import { refreshLibrary } from "@/server/utils/audible-book-manager";
 
 export const audibleRouter = createTRPCRouter({
-  getLibrary: publicProcedure.query(async () => {
+  getLibrary: publicProcedure.query(() => {
     return db
       .select({
         id: book.id,
@@ -15,14 +16,10 @@ export const audibleRouter = createTRPCRouter({
       })
       .from(book);
   }),
-  doLibraryRefresh: publicProcedure.query(() => {
+  doLibraryRefresh: publicProcedure.query(async () => {
     console.log("--------- Running library refresh ---------");
-    return "--------- Running library refresh ---------";
+    await refreshLibrary();
+    console.log("--------- Library refresh complete ---------");
+    return "Refresh complete";
   }),
-  // processItem: publicProcedure.input(z.string()).query(({ input }) => {
-  //   downloadItem(input, (p) => console.log(p))
-  //     .then(() => console.log("Download complete"))
-  //     .catch((e) => console.error(e));
-  //   return "Download started";
-  // }),
 });

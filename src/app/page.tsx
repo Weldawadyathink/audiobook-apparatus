@@ -30,13 +30,18 @@ function LibraryRow(params: { book: LibraryItem }) {
 export default function Home() {
   const library = api.audible.getLibrary.useQuery();
 
-  const doRefresh = api.audible.doLibraryRefresh.useQuery(undefined, {
+  const refreshApi = api.audible.doLibraryRefresh.useQuery(undefined, {
     enabled: false,
   });
 
+  function doRefresh() {
+    void refreshApi.refetch().then(() => library.refetch());
+  }
+
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-      <Button onClick={() => doRefresh.refetch()}>Trigger refresh</Button>
+      <Button onClick={doRefresh}>Trigger refresh</Button>
+      <span>{refreshApi.isFetching}</span>
       {library.isLoading && <span>Loading</span>}
       {library.isSuccess && (
         <Table>
