@@ -269,33 +269,33 @@ export function downloadItem(
       }
     });
 
-    audible.on("close", async (code) => {
+    audible.on("close", (code) => {
       // Ensure the resolution happens after all other promises are settled
-      await Promise.allSettled(progressFunctionPromises);
-
-      if (code == 0) {
-        if (filename === undefined) {
-          reject(
-            // TODO: Figure out why this triggers
-            // Seems to trigger on books that are no longer available
-            // such as B075FY577M
-            new Error(
-              `Download filename was missing. This should not be possible.`,
-            ),
-          );
+      void Promise.allSettled(progressFunctionPromises).then(() => {
+        if (code == 0) {
+          if (filename === undefined) {
+            reject(
+              // TODO: Figure out why this triggers
+              // Seems to trigger on books that are no longer available
+              // such as B075FY577M
+              new Error(
+                `Download filename was missing. This should not be possible.`,
+              ),
+            );
+          } else {
+            resolve({
+              percent: percent,
+              downloadSize: downloadSize,
+              totalSize: totalSize,
+              speed: speed,
+              voucherFilename: voucherFilename,
+              filename: filename,
+            });
+          }
         } else {
-          resolve({
-            percent: percent,
-            downloadSize: downloadSize,
-            totalSize: totalSize,
-            speed: speed,
-            voucherFilename: voucherFilename,
-            filename: filename,
-          });
+          reject(new Error(`Audible-cli exited with code ${code}`));
         }
-      } else {
-        reject(new Error(`Audible-cli exited with code ${code}`));
-      }
+      });
     });
   });
 }
