@@ -15,15 +15,25 @@ import {
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { Download } from "lucide-react";
 
 type LibraryItem = inferRouterOutputs<AppRouter>["audible"]["getLibrary"][0];
 
 function LibraryRow(params: { book: LibraryItem }) {
+  const { refetch: download } = api.audible.downloadBook.useQuery(
+    params.book.asin!,
+    { enabled: false },
+  );
   return (
     <TableRow>
       <TableCell>{params.book.asin}</TableCell>
       <TableCell>{params.book.title}</TableCell>
       <TableCell>{params.book.status}</TableCell>
+      <TableCell>
+        <Button onClick={() => download()}>
+          <Download />
+        </Button>
+      </TableCell>
     </TableRow>
   );
 }

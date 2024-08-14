@@ -176,13 +176,21 @@ export function getLibrary(): Promise<string[]> {
 
 export function downloadItem(
   asin: string,
+  folderName: string,
   progressFunction?: (data: {
     percent: number;
     downloadSize: string | undefined;
     totalSize: string | undefined;
     speed: string | undefined;
   }) => void,
-) {
+): Promise<{
+  percent: number;
+  downloadSize: string | undefined;
+  totalSize: string | undefined;
+  speed: string | undefined;
+  voucherFilename: string | undefined;
+  filename: string;
+}> {
   return new Promise((resolve, reject) => {
     let percent = 0;
     let downloadSize: string | undefined = undefined;
@@ -201,7 +209,7 @@ export function downloadItem(
         asin,
         "--aax-fallback",
         "--output-dir",
-        "./tmp",
+        folderName,
         "--no-confirm",
         "--overwrite",
       ],
@@ -259,6 +267,14 @@ export function downloadItem(
 
     audible.on("close", (code) => {
       if (code == 0) {
+        if (!filename) {
+          reject(
+            new Error(
+              `Download filename was missing. This should not be possible.`,
+            ),
+          );
+          return;
+        }
         resolve({
           percent: percent,
           downloadSize: downloadSize,

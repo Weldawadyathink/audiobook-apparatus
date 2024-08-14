@@ -1,7 +1,11 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { refreshLibrary } from "@/server/utils/audible-book-manager";
+import {
+  downloadAudibleBook,
+  refreshLibrary,
+} from "@/server/utils/audible-book-manager";
+import { z } from "zod";
 
 export const audibleRouter = createTRPCRouter({
   getLibrary: publicProcedure.query(() => {
@@ -21,5 +25,9 @@ export const audibleRouter = createTRPCRouter({
     await refreshLibrary();
     console.log("--------- Library refresh complete ---------");
     return "Refresh complete";
+  }),
+  downloadBook: publicProcedure.input(z.string()).query(async ({ input }) => {
+    await downloadAudibleBook(input);
+    return "Download started";
   }),
 });

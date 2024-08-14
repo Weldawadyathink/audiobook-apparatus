@@ -1,8 +1,9 @@
-import { getLibrary } from "@/server/utils/audible-cli";
+import { downloadItem, getLibrary } from "@/server/utils/audible-cli";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { fetcher } from "itty-fetcher";
+import fs from "node:fs";
 
 async function reindexAudibleData() {
   const api = fetcher({
@@ -86,4 +87,10 @@ export async function refreshLibrary() {
 
   await db.insert(book).values(values).onConflictDoNothing();
   await reindexAudibleData();
+}
+
+export async function downloadAudibleBook(asin: string) {
+  const foldername = `./tmp/${crypto.randomUUID()}`;
+  fs.mkdirSync(foldername, { recursive: true });
+  void downloadItem(asin, foldername, (data) => console.log(data));
 }
