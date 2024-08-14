@@ -38,7 +38,15 @@ function LibraryRow(params: {
     <TableRow>
       <TableCell>{params.book.asin}</TableCell>
       <TableCell>{params.book.title}</TableCell>
-      <TableCell>{params.book.status}</TableCell>
+      {params.book.status === "Downloading" &&
+      params.book.downloadPercentage ? (
+        <TableCell>
+          Downloaded {params.book.downloadPercentage}% (
+          {params.book.downloadSpeed})
+        </TableCell>
+      ) : (
+        <TableCell>{params.book.status}</TableCell>
+      )}
       <TableCell>
         {params.book.status === "Not Downloaded" && (
           <Button onClick={download}>

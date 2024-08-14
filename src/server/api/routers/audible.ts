@@ -17,6 +17,8 @@ export const audibleRouter = createTRPCRouter({
         status: book.status,
         title: book.title,
         imageUrl: book.imageUrl,
+        downloadPercentage: book.downloadPercentage,
+        downloadSpeed: book.downloadSpeed,
       })
       .from(book);
   }),

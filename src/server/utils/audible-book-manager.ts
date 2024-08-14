@@ -1,9 +1,16 @@
-import { downloadItem, getLibrary } from "@/server/utils/audible-cli";
+import {
+  convertAax,
+  convertAaxc,
+  downloadItem,
+  getLibrary,
+} from "@/server/utils/audible-cli";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { fetcher } from "itty-fetcher";
 import fs from "node:fs";
+import * as Path from "node:path";
+import { env } from "@/env";
 
 async function reindexAudibleData() {
   const api = fetcher({
@@ -124,10 +131,10 @@ export async function downloadAudibleBook(asin: string) {
     .set({ status: "Downloading" })
     .where(eq(book.asin, asin));
 
-  const foldername = `./tmp/${crypto.randomUUID()}`;
-  fs.mkdirSync(foldername, { recursive: true });
+  const tempFolder = `${process.cwd()}/tmp/${crypto.randomUUID()}`;
+  fs.mkdirSync(tempFolder, { recursive: true });
 
-  const downloadResult = await downloadItem(asin, foldername, async (data) => {
+  const downloadResult = await downloadItem(asin, tempFolder, async (data) => {
     return db
       .update(book)
       .set({
@@ -141,4 +148,34 @@ export async function downloadAudibleBook(asin: string) {
     .update(book)
     .set({ status: "Processing" })
     .where(eq(book.asin, asin));
+
+  const outputDir = `${process.cwd()}/output/`;
+  const { name: newFilename } = Path.parse(downloadResult.filename);
+  const outputFilepath = `${outputDir}/${newFilename}.m4b`;
+
+  if (!fs.existsSync(Path.parse(outputFilepath).dir)) {
+    fs.mkdirSync(Path.parse(outputFilepath).dir, { recursive: true });
+  }
+
+  if (downloadResult.voucherFilename) {
+    console.log(`Converting ${asin} aaxc file`);
+    await convertAaxc(
+      downloadResult.filename,
+      downloadResult.voucherFilename,
+      outputFilepath,
+    );
+  } else {
+    console.log(`Converting ${asin} aax file`);
+    await convertAax(
+      downloadResult.filename,
+      outputFilepath,
+      env.ACTIVATION_BYTES,
+    );
+  }
+
+  await db.update(book).set({ status: "Complete" }).where(eq(book.asin, asin));
+
+  fs.rmSync(tempFolder, { recursive: true, force: true });
+
+  return "Audible download and conversion complete";
 }

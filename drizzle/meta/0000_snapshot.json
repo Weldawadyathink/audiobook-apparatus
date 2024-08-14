@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "986d4f23-27fc-40cd-b9aa-96f2f6832c19",
+  "id": "0069fc37-7d68-4dbe-9a40-1d77b656071f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "book": {
@@ -52,6 +52,20 @@
         },
         "imageUrl": {
           "name": "imageUrl",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "downloadPercentage": {
+          "name": "downloadPercentage",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "downloadSpeed": {
+          "name": "downloadSpeed",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
