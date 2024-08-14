@@ -182,7 +182,7 @@ export function downloadItem(
     downloadSize: string | undefined;
     totalSize: string | undefined;
     speed: string | undefined;
-  }) => void,
+  }) => Promise<unknown>,
 ): Promise<{
   percent: number;
   downloadSize: string | undefined;
@@ -198,6 +198,8 @@ export function downloadItem(
     let speed: string | undefined = undefined;
     let voucherFilename: string | undefined = undefined;
     let filename: string | undefined = undefined;
+
+    const progressFunctionPromises: Promise<unknown>[] = [];
 
     const newEnv = process.env;
     newEnv.PYTHONUNBUFFERED = "true";
@@ -255,19 +257,21 @@ export function downloadItem(
         totalSize = newTotalSize;
 
         if (progressFunction) {
-          progressFunction({
-            percent: percent,
-            downloadSize: downloadSize,
-            totalSize: totalSize,
-            speed: speed,
-          });
+          progressFunctionPromises.push(
+            progressFunction({
+              percent: percent,
+              downloadSize: downloadSize,
+              totalSize: totalSize,
+              speed: speed,
+            }),
+          );
         }
       }
     });
 
     audible.on("close", (code) => {
       if (code == 0) {
-        if (!filename) {
+        if (filename === undefined) {
           reject(
             new Error(
               `Download filename was missing. This should not be possible.`,
@@ -275,13 +279,16 @@ export function downloadItem(
           );
           return;
         }
-        resolve({
-          percent: percent,
-          downloadSize: downloadSize,
-          totalSize: totalSize,
-          speed: speed,
-          voucherFilename: voucherFilename,
-          filename: filename,
+        // Ensure the resolution happens after all other promises are settled
+        void Promise.allSettled(progressFunctionPromises).then(() => {
+          resolve({
+            percent: percent,
+            downloadSize: downloadSize,
+            totalSize: totalSize,
+            speed: speed,
+            voucherFilename: voucherFilename,
+            filename: filename!,
+          });
         });
       } else {
         reject(new Error(`Audible-cli exited with code ${code}`));

@@ -27,7 +27,7 @@ export const audibleRouter = createTRPCRouter({
     return "Refresh complete";
   }),
   downloadBook: publicProcedure.input(z.string()).query(async ({ input }) => {
-    await downloadAudibleBook(input);
+    void downloadAudibleBook(input);
     return "Download started";
   }),
 });

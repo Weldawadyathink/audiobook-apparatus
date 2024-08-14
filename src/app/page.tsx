@@ -15,31 +15,47 @@ import {
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { Download } from "lucide-react";
+import { Download, ThumbsUp } from "lucide-react";
 
 type LibraryItem = inferRouterOutputs<AppRouter>["audible"]["getLibrary"][0];
 
-function LibraryRow(params: { book: LibraryItem }) {
-  const { refetch: download } = api.audible.downloadBook.useQuery(
-    params.book.asin!,
-    { enabled: false },
-  );
+function LibraryRow(params: {
+  book: LibraryItem;
+  onStartDownload?: () => void;
+}) {
+  const { refetch } = api.audible.downloadBook.useQuery(params.book.asin!, {
+    enabled: false,
+  });
+
+  function download() {
+    void refetch().then(() => {
+      if (params.onStartDownload) {
+        params.onStartDownload();
+      }
+    });
+  }
   return (
     <TableRow>
       <TableCell>{params.book.asin}</TableCell>
       <TableCell>{params.book.title}</TableCell>
       <TableCell>{params.book.status}</TableCell>
       <TableCell>
-        <Button onClick={() => download()}>
-          <Download />
-        </Button>
+        {params.book.status === "Not Downloaded" && (
+          <Button onClick={download}>
+            <Download />
+          </Button>
+        )}
+        {params.book.status === "Downloading" && <LoadingSpinner />}
+        {params.book.status === "Complete" && <ThumbsUp />}
       </TableCell>
     </TableRow>
   );
 }
 
 export default function Home() {
-  const library = api.audible.getLibrary.useQuery();
+  const library = api.audible.getLibrary.useQuery(undefined, {
+    refetchInterval: 1000,
+  });
 
   const refreshApi = api.audible.doLibraryRefresh.useQuery(undefined, {
     enabled: false,
@@ -64,11 +80,16 @@ export default function Home() {
               <TableHead>ASIN</TableHead>
               <TableHead>Title</TableHead>
               <TableHead>Status</TableHead>
+              <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {library.data.map((item) => (
-              <LibraryRow key={item.id} book={item}></LibraryRow>
+              <LibraryRow
+                key={item.id}
+                book={item}
+                onStartDownload={() => library.refetch()}
+              ></LibraryRow>
             ))}
           </TableBody>
         </Table>

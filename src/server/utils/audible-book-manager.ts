@@ -90,7 +90,55 @@ export async function refreshLibrary() {
 }
 
 export async function downloadAudibleBook(asin: string) {
+  const [bookToProcess] = await db
+    .select({
+      id: book.id,
+      asin: book.asin,
+      title: book.title,
+      status: book.status,
+      source: book.source,
+    })
+    .from(book)
+    .where(eq(book.asin, asin));
+
+  if (bookToProcess === undefined) {
+    return "ASIN not found";
+  }
+
+  if (bookToProcess.source !== "Audible") {
+    return "Book is not from audible";
+  }
+
+  if (bookToProcess.title === null) {
+    return "Title not found in database";
+  }
+
+  if (bookToProcess.status !== "Not Downloaded") {
+    return `Status is ${bookToProcess.status}, must be "Not Downloaded"`;
+  }
+
+  // Preconditions complete, actual processing begins
+
+  await db
+    .update(book)
+    .set({ status: "Downloading" })
+    .where(eq(book.asin, asin));
+
   const foldername = `./tmp/${crypto.randomUUID()}`;
   fs.mkdirSync(foldername, { recursive: true });
-  void downloadItem(asin, foldername, (data) => console.log(data));
+
+  const downloadResult = await downloadItem(asin, foldername, async (data) => {
+    return db
+      .update(book)
+      .set({
+        downloadPercentage: data.percent,
+        downloadSpeed: data.speed,
+      })
+      .where(eq(book.asin, asin));
+  });
+
+  await db
+    .update(book)
+    .set({ status: "Processing" })
+    .where(eq(book.asin, asin));
 }
