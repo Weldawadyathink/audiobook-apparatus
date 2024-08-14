@@ -131,17 +131,60 @@ export async function downloadAudibleBook(asin: string) {
     .set({ status: "Downloading" })
     .where(eq(book.asin, asin));
 
-  const tempFolder = `${process.cwd()}/tmp/${crypto.randomUUID()}`;
-  fs.mkdirSync(tempFolder, { recursive: true });
+  const maxRetries = 5;
 
-  const downloadResult = await downloadItem(asin, tempFolder, async (data) => {
-    return db
-      .update(book)
-      .set({
-        downloadPercentage: data.percent,
-        downloadSpeed: data.speed,
-      })
-      .where(eq(book.asin, asin));
+  interface ExtendedDownloadType
+    extends Awaited<ReturnType<typeof downloadItem>> {
+    tempFolder: string;
+  }
+
+  async function doDownload(
+    asin: string,
+    progressFunction?: (data: {
+      percent: number;
+      downloadSize: string | undefined;
+      totalSize: string | undefined;
+      speed: string | undefined;
+    }) => Promise<unknown>,
+    retryNumber = 0,
+  ): Promise<ExtendedDownloadType> {
+    const tempFolder = `${process.cwd()}/tmp/${crypto.randomUUID()}`;
+    fs.mkdirSync(tempFolder, { recursive: true });
+    try {
+      const result = await downloadItem(asin, tempFolder, progressFunction);
+      return {
+        ...result,
+        tempFolder: tempFolder,
+      };
+    } catch (error) {
+      fs.rmSync(tempFolder, { recursive: true, force: true });
+      const message = error instanceof Error ? error.message : "Unknown error";
+      if (message === "Download failed. Safe to retry.") {
+        if (retryNumber < maxRetries) {
+          return doDownload(asin, progressFunction, retryNumber + 1);
+        } else {
+          throw new Error(`Download failed more than ${maxRetries} times.`);
+        }
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  const { tempFolder, ...downloadResult } = await doDownload(
+    asin,
+    async (data) => {
+      return db
+        .update(book)
+        .set({
+          downloadPercentage: data.percent,
+          downloadSpeed: data.speed,
+        })
+        .where(eq(book.asin, asin));
+    },
+  ).catch(async (error) => {
+    await db.update(book).set({ status: "Failed" }).where(eq(book.asin, asin));
+    throw error;
   });
 
   await db

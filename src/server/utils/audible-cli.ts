@@ -230,6 +230,10 @@ export function downloadItem(
       if (filenameRegex) {
         filename = filenameRegex[1];
       }
+
+      if (str == "No new files downloaded.\n") {
+        reject(new Error(`Download failed. Safe to retry.`));
+      }
     });
 
     audible.stderr.on("data", (data) => {
@@ -275,9 +279,8 @@ export function downloadItem(
         if (code == 0) {
           if (filename === undefined) {
             reject(
-              // TODO: Figure out why this triggers
-              // Seems to trigger on books that are no longer available
-              // such as B075FY577M
+              // Sometimes audible-cli download returns "No new files downloaded."
+              // That case should be handled elsewhere.
               new Error(
                 `Download filename was missing. This should not be possible.`,
               ),
