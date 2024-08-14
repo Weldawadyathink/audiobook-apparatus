@@ -11,6 +11,7 @@ import { fetcher } from "itty-fetcher";
 import fs from "node:fs";
 import * as Path from "node:path";
 import { env } from "@/env";
+import pAll from "p-all";
 
 async function reindexAudibleData() {
   const api = fetcher({
@@ -221,4 +222,45 @@ export async function downloadAudibleBook(asin: string) {
   fs.rmSync(tempFolder, { recursive: true, force: true });
 
   return "Audible download and conversion complete";
+}
+
+export async function downloadAll(concurrentDownloads = 5) {
+  const booksToDownload = await db
+    .select({ asin: book.asin })
+    .from(book)
+    .where(
+      and(
+        isNotNull(book.asin),
+        eq(book.source, "Audible"),
+        eq(book.status, "Not Downloaded"),
+        isNotNull(book.title),
+      ),
+    );
+
+  if (booksToDownload.length === 0) {
+    return "No books to download";
+  }
+
+  console.log(`Starting bulk download of ${booksToDownload.length}`);
+
+  const downloadFunctions = booksToDownload.map((book) => {
+    return () => {
+      console.log(`Starting download for ${book.asin}`);
+      return downloadAudibleBook(book.asin!);
+    };
+  });
+
+  await pAll(downloadFunctions, {
+    concurrency: concurrentDownloads,
+    stopOnError: false,
+  }).catch((error) => {
+    if (error instanceof AggregateError) {
+      console.log("Some items failed to download");
+    } else {
+      throw error;
+    }
+  });
+
+  console.log("Bulk download complete");
+  return "Bulk download complete";
 }

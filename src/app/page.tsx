@@ -73,12 +73,25 @@ export default function Home() {
     void refreshApi.refetch().then(() => library.refetch());
   }
 
+  const { refetch: downloadAllQuery, isFetching: isDownloadingAllBooks } =
+    api.audible.downloadAllBooks.useQuery(5, {
+      enabled: false,
+    });
+
+  function downloadAll() {
+    void downloadAllQuery().then(() => void library.refetch());
+  }
+
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-      <Button disabled={refreshApi.isFetching} onClick={doRefresh}>
-        {refreshApi.isFetching ? <LoadingSpinner /> : "Refresh Library"}
-      </Button>
-      <span>{refreshApi.isFetching}</span>
+      <div className="flex flex-row gap-6">
+        <Button disabled={refreshApi.isFetching} onClick={doRefresh}>
+          {refreshApi.isFetching ? <LoadingSpinner /> : "Refresh Library"}
+        </Button>
+        <Button disabled={isDownloadingAllBooks} onClick={downloadAll}>
+          {isDownloadingAllBooks ? <LoadingSpinner /> : "Download everything"}
+        </Button>
+      </div>
       {library.isLoading && <span>Loading</span>}
       {library.isSuccess && (
         <Table>

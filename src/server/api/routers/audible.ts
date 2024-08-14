@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
 import {
+  downloadAll,
   downloadAudibleBook,
   refreshLibrary,
 } from "@/server/utils/audible-book-manager";
@@ -32,4 +33,10 @@ export const audibleRouter = createTRPCRouter({
     void downloadAudibleBook(input);
     return "Download started";
   }),
+  downloadAllBooks: publicProcedure
+    .input(z.number().int().min(1).max(10))
+    .query(async ({ input }) => {
+      await downloadAll(input);
+      return "Downloads complete";
+    }),
 });
