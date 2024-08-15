@@ -1,12 +1,12 @@
 import fs from "node:fs";
 import yaml from "js-yaml";
 import { env } from "@/env";
+import { z } from "zod";
 
-const defaultConfig = {
-  // Default config options
-  maxConcurrentDownloads: 5,
-  audibleActivationBytes: "1234567B",
-};
+const defaultConfig = z.object({
+  maxConcurrentDownloads: z.number().int().min(1).catch(5),
+  audibleActivationBytes: z.union([z.string(), z.number()]).catch("1A2B3C4D"),
+});
 
 console.log("Loading config file");
 let configFileData = undefined;
@@ -17,10 +17,7 @@ try {
   console.log("Failed to load config file");
 }
 
-const internalConfig = {
-  ...defaultConfig,
-  ...(configFileData ? configFileData : {}),
-} as typeof defaultConfig;
+const internalConfig = defaultConfig.parse(configFileData || {});
 
 function writeConfig() {
   const yamlData = yaml.dump(internalConfig);
@@ -31,7 +28,7 @@ function writeConfig() {
 writeConfig();
 
 // @ts-expect-error Missing properties will be added shortly
-const config: typeof defaultConfig = {};
+const config: z.infer<typeof defaultConfig> = {};
 Object.keys(internalConfig).forEach((key) => {
   Object.defineProperty(config, key, {
     get() {
