@@ -16,7 +16,7 @@
     "docker:run": "docker run -it --rm -e ACTIVATION_BYTES=12345678 audiobook-apparatus:latest"
   },
   "dependencies": {
-    "@libsql/client": "^0.6.0",
+    "@libsql/client": "^0.6.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.50.0",

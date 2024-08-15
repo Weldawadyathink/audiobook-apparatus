@@ -38,6 +38,8 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
 # Fix issue with libsql: https://github.com/payloadcms/payload/issues/7527
+# https://github.com/tursodatabase/libsql-client-ts/issues/112
+# Adds 500mb to image, but unavoidable until libsql is fixed
 COPY --from=builder /app/node_modules ./node_modules
 
 VOLUME /config
