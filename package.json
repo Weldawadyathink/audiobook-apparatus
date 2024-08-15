@@ -11,7 +11,9 @@
     "db:studio": "drizzle-kit studio",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "docker:build": "docker build -t audiobook-apparatus:latest .",
+    "docker:run": "docker run -it --rm -e ACTIVATION_BYTES=12345678 audiobook-apparatus:latest"
   },
   "dependencies": {
     "@libsql/client": "^0.6.0",
