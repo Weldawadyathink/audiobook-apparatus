@@ -1,0 +1,13 @@
+DockerfileOld
+.dockerignore
+node_modules
+npm-debug.log
+README.md
+.next
+!.next/static
+!.next/standalone
+.git
+.env
+db.sqlite
+tmp/
+output/
