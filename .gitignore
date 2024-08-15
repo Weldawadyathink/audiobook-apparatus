@@ -3,6 +3,7 @@
 /tmp
 /output
 db.sqlite
+config.yaml
 
 # dependencies
 /node_modules

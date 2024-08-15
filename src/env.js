@@ -11,7 +11,7 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
-    ACTIVATION_BYTES: z.string(),
+    CONFIG_FILE: z.string(),
   },
 
   /**
@@ -30,7 +30,7 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
-    ACTIVATION_BYTES: process.env.ACTIVATION_BYTES,
+    CONFIG_FILE: process.env.CONFIG_FILE,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
