@@ -33,10 +33,8 @@ export const audibleRouter = createTRPCRouter({
     void downloadAudibleBook(input);
     return "Download started";
   }),
-  downloadAllBooks: publicProcedure
-    .input(z.number().int().min(1).max(10))
-    .query(async ({ input }) => {
-      await downloadAll(input);
-      return "Downloads complete";
-    }),
+  downloadAllBooks: publicProcedure.query(async () => {
+    await downloadAll();
+    return "Downloads complete";
+  }),
 });

@@ -12,6 +12,7 @@ import fs from "node:fs";
 import * as Path from "node:path";
 import { env } from "@/env";
 import pAll from "p-all";
+import { config } from "@/config";
 
 async function reindexAudibleData() {
   const api = fetcher({
@@ -213,7 +214,7 @@ export async function downloadAudibleBook(asin: string) {
     await convertAax(
       downloadResult.filename,
       outputFilepath,
-      env.ACTIVATION_BYTES,
+      config.audibleActivationBytes,
     );
   }
 
@@ -224,7 +225,7 @@ export async function downloadAudibleBook(asin: string) {
   return "Audible download and conversion complete";
 }
 
-export async function downloadAll(concurrentDownloads = 5) {
+export async function downloadAll() {
   const booksToDownload = await db
     .select({ asin: book.asin })
     .from(book)
@@ -251,7 +252,7 @@ export async function downloadAll(concurrentDownloads = 5) {
   });
 
   await pAll(downloadFunctions, {
-    concurrency: concurrentDownloads,
+    concurrency: config.maxConcurrentDownloads,
     stopOnError: false,
   }).catch((error) => {
     if (error instanceof AggregateError) {

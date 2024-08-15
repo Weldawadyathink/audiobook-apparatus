@@ -74,7 +74,7 @@ export default function Home() {
   }
 
   const { refetch: downloadAllQuery, isFetching: isDownloadingAllBooks } =
-    api.audible.downloadAllBooks.useQuery(5, {
+    api.audible.downloadAllBooks.useQuery(undefined, {
       enabled: false,
     });
 
