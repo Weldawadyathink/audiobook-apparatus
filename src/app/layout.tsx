@@ -4,6 +4,7 @@ import { Inter as FontSans } from "next/font/google";
 import { type Metadata } from "next";
 import { TRPCReactProvider } from "@/trpc/react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -28,6 +29,10 @@ export default function RootLayout({
         )}
       >
         <TRPCReactProvider>
+          <div className="flex flex-row gap-6">
+            <Link href="/">Home</Link>
+            <Link href="/config">Configuration</Link>
+          </div>
           <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
             {children}
           </main>

@@ -1,6 +1,6 @@
-import { audibleRouter } from "@/server/api/routers/audible";
-
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
+import { configRouter } from "@/server/api/routers/config";
+import { audibleRouter } from "@/server/api/routers/audible";
 
 /**
  * This is the primary router for your server.
@@ -9,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   audible: audibleRouter,
+  config: configRouter,
 });
 
 // export type definition of API
