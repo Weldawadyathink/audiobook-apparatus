@@ -1,31 +1,41 @@
 import fs from "node:fs";
 import yaml from "js-yaml";
 import { env } from "@/env";
-import { z } from "zod";
+import { configValidator, type sparseConfigValidator } from "@/configTypes";
+import type { z } from "zod";
 
-export const defaultConfig = z.object({
-  maxConcurrentDownloads: z.number().int().min(1).catch(5),
-  audibleActivationBytes: z.union([z.string(), z.number()]).catch("1A2B3C4D"),
-});
+const defaultConfig: z.infer<typeof configValidator> = {
+  maxConcurrentDownloads: 5,
+  audibleActivationBytes: "1A2B3C4D",
+};
 
-export type DefaultConfigType = z.infer<typeof defaultConfig>;
-
-console.log("Loading config file");
-let configFileData = undefined;
+let configFileData = {};
 try {
-  configFileData = yaml.load(fs.readFileSync(env.CONFIG_FILE, "utf8"));
+  configFileData = yaml.load(
+    fs.readFileSync(env.CONFIG_FILE, "utf8"),
+  ) as object;
   console.log("Loaded config file");
 } catch (e) {
   console.log("Failed to load config file");
 }
 
-export const config = defaultConfig.parse(configFileData || {});
+let internalConfig = configValidator.parse({
+  ...defaultConfig,
+  ...configFileData,
+});
 
-// Must be run after changing the config
 export function writeConfig() {
-  const yamlData = yaml.dump(config);
+  const yamlData = yaml.dump(internalConfig);
   fs.writeFileSync(env.CONFIG_FILE, yamlData);
 }
 
 // Write any missing defaults to config
 writeConfig();
+
+export const config = {
+  read: () => internalConfig,
+  write: (obj: z.infer<typeof sparseConfigValidator>) => {
+    internalConfig = configValidator.parse({ ...internalConfig, ...obj });
+    writeConfig();
+  },
+};

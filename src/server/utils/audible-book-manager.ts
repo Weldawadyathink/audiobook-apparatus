@@ -10,7 +10,6 @@ import { and, eq, isNotNull, isNull } from "drizzle-orm";
 import { fetcher } from "itty-fetcher";
 import fs from "node:fs";
 import * as Path from "node:path";
-import { env } from "@/env";
 import pAll from "p-all";
 import { config } from "@/config";
 
@@ -214,7 +213,7 @@ export async function downloadAudibleBook(asin: string) {
     await convertAax(
       downloadResult.filename,
       outputFilepath,
-      config.audibleActivationBytes,
+      config.read().audibleActivationBytes.toString(),
     );
   }
 
@@ -252,7 +251,7 @@ export async function downloadAll() {
   });
 
   await pAll(downloadFunctions, {
-    concurrency: config.maxConcurrentDownloads,
+    concurrency: config.read().maxConcurrentDownloads,
     stopOnError: false,
   }).catch((error) => {
     if (error instanceof AggregateError) {

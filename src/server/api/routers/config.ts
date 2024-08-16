@@ -1,12 +1,11 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { config, defaultConfig } from "@/config";
+import { config } from "@/config";
+import { sparseConfigValidator } from "@/configTypes";
 
 export const configRouter = createTRPCRouter({
-  getConfig: publicProcedure.query(() => config),
-  setConfig: publicProcedure.input(defaultConfig).query(({ input }) => {
-    for (const [key, value] of Object.entries(input)) {
-      // @ts-expect-error Shut up typescript this is fine
-      config[key] = value;
-    }
+  getConfig: publicProcedure.query(() => config.read()),
+  setConfig: publicProcedure.input(sparseConfigValidator).query(({ input }) => {
+    config.write(input);
+    return "Config updated";
   }),
 });
