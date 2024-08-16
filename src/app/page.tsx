@@ -64,20 +64,15 @@ const columns: ColumnDef<LibraryItem>[] = [
   },
 ];
 
-interface DataTableProps<TData, TValue> {
+export function DataTable<TData, TValue>(props: {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-}
-
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+}) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
-    data,
-    columns,
+    data: props.data,
+    columns: props.columns,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
