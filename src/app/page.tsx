@@ -15,11 +15,13 @@ import {
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { Download, ThumbsUp } from "lucide-react";
+import { ArrowUpDown, Download, ThumbsUp } from "lucide-react";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -40,7 +42,17 @@ const columns: ColumnDef<LibraryItem>[] = [
   },
   {
     accessorKey: "title",
-    header: "Title",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Title
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "downloadPercentage",
@@ -61,10 +73,17 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
   });
 
   return (
@@ -115,47 +134,6 @@ export function DataTable<TData, TValue>({
   );
 }
 
-function LibraryRow(params: {
-  book: LibraryItem;
-  onStartDownload?: () => void;
-}) {
-  const { refetch } = api.audible.downloadBook.useQuery(params.book.asin!, {
-    enabled: false,
-  });
-
-  function download() {
-    void refetch().then(() => {
-      if (params.onStartDownload) {
-        params.onStartDownload();
-      }
-    });
-  }
-  return (
-    <TableRow>
-      <TableCell>{params.book.asin}</TableCell>
-      <TableCell>{params.book.title}</TableCell>
-      {params.book.status === "Downloading" &&
-      params.book.downloadPercentage ? (
-        <TableCell>
-          Downloaded {params.book.downloadPercentage}% (
-          {params.book.downloadSpeed})
-        </TableCell>
-      ) : (
-        <TableCell>{params.book.status}</TableCell>
-      )}
-      <TableCell>
-        {params.book.status === "Not Downloaded" && (
-          <Button onClick={download}>
-            <Download />
-          </Button>
-        )}
-        {params.book.status === "Downloading" && <LoadingSpinner />}
-        {params.book.status === "Complete" && <ThumbsUp />}
-      </TableCell>
-    </TableRow>
-  );
-}
-
 export default function Home() {
   const library = api.audible.getLibrary.useQuery(undefined, {
     refetchInterval: 1000,
@@ -181,42 +159,6 @@ export default function Home() {
   return (
     <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
       {library.isSuccess && <DataTable data={library.data} columns={columns} />}
-    </div>
-  );
-
-  return (
-    <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-      <div className="flex flex-row gap-6">
-        <Button disabled={refreshApi.isFetching} onClick={doRefresh}>
-          {refreshApi.isFetching ? <LoadingSpinner /> : "Refresh Library"}
-        </Button>
-        <Button disabled={isDownloadingAllBooks} onClick={downloadAll}>
-          {isDownloadingAllBooks ? <LoadingSpinner /> : "Download everything"}
-        </Button>
-      </div>
-      {library.isLoading && <span>Loading</span>}
-      {library.isSuccess && (
-        <Table>
-          <TableCaption>Audible Library</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>ASIN</TableHead>
-              <TableHead>Title</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {library.data.map((item) => (
-              <LibraryRow
-                key={item.id}
-                book={item}
-                onStartDownload={() => library.refetch()}
-              ></LibraryRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
     </div>
   );
 }
