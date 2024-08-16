@@ -1,11 +1,10 @@
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
-import { config } from "@/config";
-import { sparseConfigValidator } from "@/configTypes";
+import { getConfig, setConfig, configObjectValidator } from "@/config";
 
 export const configRouter = createTRPCRouter({
-  getConfig: publicProcedure.query(() => config.read()),
-  setConfig: publicProcedure.input(sparseConfigValidator).query(({ input }) => {
-    config.write(input);
+  getConfig: publicProcedure.query(() => getConfig()),
+  setConfig: publicProcedure.input(configObjectValidator).query(({ input }) => {
+    setConfig(input);
     return "Config updated";
   }),
 });

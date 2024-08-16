@@ -11,7 +11,7 @@ import { fetcher } from "itty-fetcher";
 import fs from "node:fs";
 import * as Path from "node:path";
 import pAll from "p-all";
-import { config } from "@/config";
+import { getConfig } from "@/config";
 
 async function reindexAudibleData() {
   const api = fetcher({
@@ -213,7 +213,7 @@ export async function downloadAudibleBook(asin: string) {
     await convertAax(
       downloadResult.filename,
       outputFilepath,
-      config.read().audibleActivationBytes.toString(),
+      getConfig().audibleActivationBytes.value,
     );
   }
 
@@ -251,7 +251,7 @@ export async function downloadAll() {
   });
 
   await pAll(downloadFunctions, {
-    concurrency: config.read().maxConcurrentDownloads,
+    concurrency: getConfig().maxConcurrentDownloads.value,
     stopOnError: false,
   }).catch((error) => {
     if (error instanceof AggregateError) {

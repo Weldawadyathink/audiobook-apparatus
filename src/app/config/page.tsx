@@ -2,7 +2,7 @@
 
 import { api } from "@/trpc/react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { type configValidator, sparseConfigValidator } from "@/configTypes";
+import { type configObjectValidator } from "@/config";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,14 +11,20 @@ import { type z } from "zod";
 
 export default function Page() {
   const serverConfig = api.config.getConfig.useQuery();
-  const [config, setConfig] = useState<z.infer<typeof configValidator>>();
+  const [config, setConfig] = useState<z.infer<typeof configObjectValidator>>();
 
   useEffect(() => {
     setConfig(serverConfig.data);
   }, [serverConfig.data]);
 
-  function setConfigKey(newValue: z.infer<typeof sparseConfigValidator>) {
-    setConfig({ ...config, ...newValue } as z.infer<typeof configValidator>);
+  function setConfigKey(
+    key: keyof z.infer<typeof configObjectValidator>,
+    value: unknown,
+  ) {
+    const temp = structuredClone(config)!;
+    // @ts-expect-error Types are verified with trpc, so ignore them here
+    temp[key].value = value;
+    setConfig(temp);
   }
 
   const { refetch: sendConfigUpdate } = api.config.setConfig.useQuery(config!, {
@@ -27,11 +33,9 @@ export default function Page() {
 
   function saveConfig() {
     console.log("Sending config update");
-    if (sparseConfigValidator.safeParse(config).success) {
-      void sendConfigUpdate().then(() => serverConfig.refetch());
-    } else {
-      console.error("Could not validate config");
-    }
+    void sendConfigUpdate()
+      .then(() => serverConfig.refetch())
+      .catch(console.error);
   }
 
   return (
@@ -47,9 +51,9 @@ export default function Page() {
               className="text-black"
               type="text"
               id="audibleActivationBytes"
-              value={config.audibleActivationBytes}
+              value={config.audibleActivationBytes.value}
               onChange={(e) =>
-                setConfigKey({ audibleActivationBytes: e.target.value })
+                setConfigKey("audibleActivationBytes", e.target.value)
               }
             />
           </div>
@@ -62,11 +66,9 @@ export default function Page() {
               className="text-black"
               type="number"
               id="maxConcurrentDownloads"
-              value={config.maxConcurrentDownloads}
+              value={config.maxConcurrentDownloads.value}
               onChange={(e) =>
-                setConfigKey({
-                  maxConcurrentDownloads: parseInt(e.target.value),
-                })
+                setConfigKey("maxConcurrentDownloads", e.target.value)
               }
             />
           </div>

@@ -1,41 +1,61 @@
 import fs from "node:fs";
 import yaml from "js-yaml";
 import { env } from "@/env";
-import { configValidator, type sparseConfigValidator } from "@/configTypes";
-import type { z } from "zod";
+import { z } from "zod";
 
-const defaultConfig: z.infer<typeof configValidator> = {
-  maxConcurrentDownloads: 5,
-  audibleActivationBytes: "1A2B3C4D",
-};
+const yamlFile = z.preprocess(
+  (input) => input || {},
+  z.record(z.string(), z.unknown()).default({}),
+);
 
-let configFileData = {};
-try {
-  configFileData = yaml.load(
-    fs.readFileSync(env.CONFIG_FILE, "utf8"),
-  ) as object;
-  console.log("Loaded config file");
-} catch (e) {
-  console.log("Failed to load config file");
-}
+// All options should fall back to defaults if parsing fails, so overall parse never fails
+export const configObjectValidator = z.object({
+  audibleActivationBytes: z.preprocess(
+    (input) => input || {},
+    z.object({
+      userFacingName: z.preprocess(
+        () => "Audible Activation Bytes",
+        z.string(),
+      ),
+      value: z.string().default("1A2B3C4D"),
+    }),
+  ),
 
-let internalConfig = configValidator.parse({
-  ...defaultConfig,
-  ...configFileData,
+  maxConcurrentDownloads: z.preprocess(
+    (input) => input || {},
+    z.object({
+      userFacingName: z.preprocess(
+        () => "Max Concurrent Downloads",
+        z.string(),
+      ),
+      value: z.coerce.number().int().min(1).default(5),
+    }),
+  ),
 });
 
-export function writeConfig() {
-  const yamlData = yaml.dump(internalConfig);
-  fs.writeFileSync(env.CONFIG_FILE, yamlData);
+export function getConfig() {
+  const configFileData = {};
+  try {
+    const tempConfig = yaml.load(fs.readFileSync(env.CONFIG_FILE, "utf8"));
+    const parsedConfig = yamlFile.parse(tempConfig);
+    for (const [key, value] of Object.entries(parsedConfig)) {
+      // @ts-expect-error These keys are fine
+      configFileData[key] = { value: value };
+    }
+  } catch (e) {
+    console.log("Failed to load config file");
+  }
+
+  return configObjectValidator.readonly().parse(configFileData);
 }
 
-// Write any missing defaults to config
-writeConfig();
-
-export const config = {
-  read: () => internalConfig,
-  write: (obj: z.infer<typeof sparseConfigValidator>) => {
-    internalConfig = configValidator.parse({ ...internalConfig, ...obj });
-    writeConfig();
-  },
-};
+export function setConfig(config: z.infer<typeof configObjectValidator>) {
+  const parsedConfig = configObjectValidator.parse(config);
+  const remappedConfig = {};
+  for (const [key, value] of Object.entries(parsedConfig)) {
+    // @ts-expect-error These keys are fine
+    remappedConfig[key] = value.value;
+  }
+  const yamlData = yaml.dump(remappedConfig);
+  fs.writeFileSync(env.CONFIG_FILE, yamlData);
+}
