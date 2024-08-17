@@ -20,6 +20,11 @@ export const audibleRouter = createTRPCRouter({
         imageUrl: book.imageUrl,
         downloadPercentage: book.downloadPercentage,
         downloadSpeed: book.downloadSpeed,
+        isDownloadable: book.isDownloadable,
+        language: book.language,
+        runtimeLengthMinutes: book.runtimeLengthMinutes,
+        author: book.author,
+        narrator: book.narrator,
       })
       .from(book);
   }),

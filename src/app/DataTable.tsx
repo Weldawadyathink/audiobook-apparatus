@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/table";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/api/root";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 
 type LibraryItem = inferRouterOutputs<AppRouter>["audible"]["getLibrary"][0];
 
@@ -53,7 +53,15 @@ export const columns: ColumnDef<LibraryItem>[] = [
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
           Title
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          {column.getIsSorted() === false && (
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          )}
+          {column.getIsSorted() === "asc" && (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          )}
+          {column.getIsSorted() === "desc" && (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          )}{" "}
         </Button>
       );
     },
@@ -66,6 +74,76 @@ export const columns: ColumnDef<LibraryItem>[] = [
   {
     accessorKey: "downloadSpeed",
     header: "Speed",
+  },
+  {
+    accessorKey: "isDownloadable",
+    header: "Downloadable",
+  },
+  {
+    accessorKey: "author",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Author
+          {column.getIsSorted() === false && (
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          )}
+          {column.getIsSorted() === "asc" && (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          )}
+          {column.getIsSorted() === "desc" && (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          )}{" "}
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "narrator",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Narrator
+          {column.getIsSorted() === false && (
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          )}
+          {column.getIsSorted() === "asc" && (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          )}
+          {column.getIsSorted() === "desc" && (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          )}
+        </Button>
+      );
+    },
+  },
+  {
+    accessorKey: "language",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Language
+          {column.getIsSorted() === false && (
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          )}
+          {column.getIsSorted() === "asc" && (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          )}
+          {column.getIsSorted() === "desc" && (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          )}
+        </Button>
+      );
+    },
   },
 ];
 

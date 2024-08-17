@@ -6,7 +6,7 @@ import {
 } from "@/server/utils/audible-cli";
 import { book } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { and, eq, isNotNull, isNull } from "drizzle-orm";
+import { and, eq, isNotNull, isNull, or } from "drizzle-orm";
 import { fetcher } from "itty-fetcher";
 import fs from "node:fs";
 import * as Path from "node:path";
@@ -30,7 +30,16 @@ async function reindexAudibleData() {
     .select({ asin: book.asin })
     .from(book)
     .where(
-      and(eq(book.source, "Audible"), isNotNull(book.asin), isNull(book.title)),
+      and(
+        eq(book.source, "Audible"),
+        isNotNull(book.asin),
+        or(
+          isNull(book.title),
+          isNull(book.imageUrl),
+          isNull(book.author),
+          isNull(book.narrator),
+        ),
+      ),
     );
 
   console.log(`Updating audible data for ${results.length} books`);
@@ -78,6 +87,8 @@ async function reindexAudibleData() {
             imageUrl: data.product_images["500"],
             language: data.language,
             isDownloadable: data.is_listenable,
+            narrator: data.narrators[0]?.name ?? null,
+            author: data.authors[0]?.name,
           })
           .where(eq(book.asin, asin));
         return console.log(`Updated data for ${asin}`);
