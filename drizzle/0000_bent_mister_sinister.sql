@@ -7,7 +7,12 @@ CREATE TABLE `book` (
 	`title` text,
 	`imageUrl` text,
 	`downloadPercentage` integer,
-	`downloadSpeed` text
+	`downloadSpeed` text,
+	`isDownloadable` integer,
+	`language` text,
+	`runtimeLengthMinutes` text,
+	`author` text,
+	`narrator` text
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `book_asin_unique` ON `book` (`asin`);

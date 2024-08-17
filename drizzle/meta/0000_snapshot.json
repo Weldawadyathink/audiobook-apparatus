@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0069fc37-7d68-4dbe-9a40-1d77b656071f",
+  "id": "7e09b632-dda2-41d4-8cee-2185161bbc43",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "book": {
@@ -66,6 +66,41 @@
         },
         "downloadSpeed": {
           "name": "downloadSpeed",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "isDownloadable": {
+          "name": "isDownloadable",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "language": {
+          "name": "language",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "runtimeLengthMinutes": {
+          "name": "runtimeLengthMinutes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "author": {
+          "name": "author",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "narrator": {
+          "name": "narrator",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

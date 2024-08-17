@@ -12,4 +12,9 @@ export const book = sqliteTable("book", {
   imageUrl: text("imageUrl"),
   downloadPercentage: integer("downloadPercentage"),
   downloadSpeed: text("downloadSpeed"),
+  isDownloadable: integer("isDownloadable", { mode: "boolean" }),
+  language: text("language"),
+  runtimeLengthMinutes: text("runtimeLengthMinutes"),
+  author: text("author"),
+  narrator: text("narrator"),
 });

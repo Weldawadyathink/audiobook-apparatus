@@ -12,6 +12,7 @@ import fs from "node:fs";
 import * as Path from "node:path";
 import pAll from "p-all";
 import { getConfig } from "@/config";
+import { z } from "zod";
 
 async function reindexAudibleData() {
   const api = fetcher({
@@ -34,15 +35,32 @@ async function reindexAudibleData() {
 
   console.log(`Updating audible data for ${results.length} books`);
 
-  interface AudibleCatalogProductResponse {
-    // Incomplete, but includes all parts used
-    product: {
-      asin: string;
-      product_images: {
-        "500": string;
-      };
-      title: string;
-    };
+  const audibleProductResponse = z.object({
+    asin: z.coerce.string().catch(""),
+    authors: z.array(
+      z.object({
+        name: z.coerce.string().catch(""),
+      }),
+    ),
+    narrators: z.array(
+      z.object({
+        name: z.coerce.string().catch(""),
+      }),
+    ),
+    publication_name: z.coerce.string().catch(""),
+    publisher_name: z.coerce.string().catch(""),
+    runtime_length_min: z.coerce.number().int().catch(0),
+    product_images: z.object({
+      "500": z.coerce.string().url(),
+    }),
+    title: z.coerce.string().catch(""),
+    subtitle: z.coerce.string().catch(""),
+    language: z.coerce.string().catch(""),
+    is_listenable: z.coerce.boolean(),
+  });
+
+  interface AudibleApiResponse {
+    product: z.infer<typeof audibleProductResponse>;
   }
 
   async function updateBook(asin: string, retryNumber = 0) {
@@ -50,14 +68,16 @@ async function reindexAudibleData() {
     await api
       .get(asin)
       .then(async (response) => {
-        const data = response as AudibleCatalogProductResponse;
-        const title = data.product.title;
-        const imageUrl = data.product.product_images["500"];
+        const data = audibleProductResponse.parse(
+          (response as AudibleApiResponse).product,
+        );
         await db
           .update(book)
           .set({
-            title: title,
-            imageUrl: imageUrl,
+            title: data.title,
+            imageUrl: data.product_images["500"],
+            language: data.language,
+            isDownloadable: data.is_listenable,
           })
           .where(eq(book.asin, asin));
         return console.log(`Updated data for ${asin}`);
