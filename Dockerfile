@@ -32,6 +32,11 @@ RUN bun run build
 FROM base AS release
 ENV NODE_ENV=production
 
+# Install ffmpeg and audible-cli
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install -y python3 python3-pip ffmpeg && rm -rf /var/lib/apt/lists/*
+RUN pip install audible-cli
+
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /app/.next/standalone ./
@@ -44,6 +49,7 @@ COPY --from=builder /app/node_modules ./node_modules
 
 VOLUME /config
 ENV DATABASE_URL file:/config/db.sqlite
+ENV CONFIG_FILE /config/config.yaml
 
 # run the app
 EXPOSE 3000/tcp
