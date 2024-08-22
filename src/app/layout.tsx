@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable}`}>
       <body
         className={cn(
-          "bg-background min-h-screen font-sans antialiased",
+          "min-h-screen bg-background bg-gradient-to-b from-[#BF8626] to-[#BF5926] font-sans text-white antialiased",
           fontSans.variable,
         )}
       >
@@ -33,7 +33,7 @@ export default function RootLayout({
             <Link href="/">Home</Link>
             <Link href="/config">Configuration</Link>
           </div>
-          <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+          <main className="flex min-h-screen flex-col items-center justify-center">
             {children}
           </main>
         </TRPCReactProvider>
