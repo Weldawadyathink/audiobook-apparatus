@@ -1,6 +1,6 @@
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
-FROM oven/bun:1 AS base
+FROM oven/bun:latest AS base
 WORKDIR /app
 
 # install dependencies into temp directory
@@ -30,14 +30,18 @@ ENV SKIP_ENV_VALIDATION 1
 RUN bun test
 RUN bun run build
 
+FROM base AS audible
+RUN apt update && apt install -y wget unzip && \
+    wget "https://github.com/mkb79/audible-cli/releases/latest/download/audible_linux_ubuntu_latest.zip" -O audible.zip && \
+    unzip audible.zip
+
 # copy production dependencies and source code into final image
 FROM base AS release
 ENV NODE_ENV=production
 
 # Install ffmpeg and audible-cli
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && apt install -y python3 python3-pip ffmpeg && rm -rf /var/lib/apt/lists/*
-RUN pip install audible-cli
+RUN apt update && apt install -y ffmpeg && rm -rf /var/lib/apt/lists/*
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
@@ -46,6 +50,7 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/setup/setup.js .
 COPY drizzle/*.sql ./drizzle/
 COPY start_server.sh .
+COPY --from=audible /app/audible /bin/audible
 
 # Fix issue with libsql: https://github.com/payloadcms/payload/issues/7527
 # https://github.com/tursodatabase/libsql-client-ts/issues/112
