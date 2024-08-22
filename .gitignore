@@ -4,6 +4,7 @@
 /output
 db.sqlite
 config.yaml
+/setup
 
 # dependencies
 /node_modules
