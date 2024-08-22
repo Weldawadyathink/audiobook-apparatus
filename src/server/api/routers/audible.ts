@@ -8,8 +8,24 @@ import {
 } from "@/server/utils/audible-book-manager";
 import { z } from "zod";
 
+export interface LibraryItem {
+  id: number;
+  asin: string | null;
+  source: string | null;
+  status: string | null;
+  title: string | null;
+  imageUrl: string | null;
+  downloadPercentage: number | null;
+  downloadSpeed: string | null;
+  isDownloadable: boolean | null;
+  language: string | null;
+  runtimeLengthMinutes: string | null;
+  author: string | null;
+  narrator: string | null;
+}
+
 export const audibleRouter = createTRPCRouter({
-  getLibrary: publicProcedure.query(() => {
+  getLibrary: publicProcedure.query(async (): Promise<LibraryItem[]> => {
     return db
       .select({
         id: book.id,

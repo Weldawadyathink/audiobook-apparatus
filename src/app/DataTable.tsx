@@ -2,7 +2,7 @@
 
 import {
   type ColumnDef,
-  ColumnFiltersState,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -27,12 +27,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { inferRouterOutputs } from "@trpc/server";
-import type { AppRouter } from "@/server/api/root";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
-
-type LibraryItem = inferRouterOutputs<AppRouter>["audible"]["getLibrary"][0];
+import { type LibraryItem } from "@/server/api/routers/audible";
 
 export const columns: ColumnDef<LibraryItem>[] = [
   {
@@ -148,12 +145,15 @@ export const columns: ColumnDef<LibraryItem>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => (
+      <span className="capitalize">{row.getValue("language")}</span>
+    ),
   },
 ];
 
-export function DataTable<TData, TValue>(props: {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
+export function DataTable(props: {
+  columns: ColumnDef<LibraryItem>[];
+  data: LibraryItem[];
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] =
