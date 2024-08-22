@@ -8,12 +8,14 @@ WORKDIR /app
 FROM base AS modules
 RUN mkdir -p /temp/dev
 COPY package.json bun.lockb /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile
+RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache \
+    cd /temp/dev && bun install --frozen-lockfile
 
 # install with --production (exclude devDependencies)
 RUN mkdir -p /temp/prod
 COPY package.json bun.lockb /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
+RUN --mount=type=cache,id=bun,target=/root/.bun/install/cache \
+    cd /temp/prod && bun install --frozen-lockfile --production
 
 # copy node_modules from temp directory
 # then copy all (non-ignored) project files into the image
@@ -41,11 +43,14 @@ RUN pip install audible-cli
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/setup/setup.js .
+COPY drizzle/*.sql ./drizzle/
+COPY start_server.sh .
 
 # Fix issue with libsql: https://github.com/payloadcms/payload/issues/7527
 # https://github.com/tursodatabase/libsql-client-ts/issues/112
 # Adds 500mb to image, but unavoidable until libsql is fixed
-COPY --from=builder /app/node_modules ./node_modules
+COPY --from=modules /temp/prod/node_modules ./node_modules
 
 VOLUME /config
 ENV DATABASE_URL file:/config/db.sqlite
@@ -53,4 +58,4 @@ ENV CONFIG_FILE /config/config.yaml
 
 # run the app
 EXPOSE 3000/tcp
-CMD [ "bun", "run", "server.js" ]
+CMD [ "start_server.sh" ]
