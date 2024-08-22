@@ -2,8 +2,10 @@
 
 import {
   type ColumnDef,
+  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   type SortingState,
   useReactTable,
@@ -28,6 +30,7 @@ import {
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/api/root";
 import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 type LibraryItem = inferRouterOutputs<AppRouter>["audible"]["getLibrary"][0];
 
@@ -124,6 +127,7 @@ export const columns: ColumnDef<LibraryItem>[] = [
     },
   },
   {
+    id: "language",
     accessorKey: "language",
     header: ({ column }) => {
       return (
@@ -153,7 +157,14 @@ export function DataTable<TData, TValue>(props: {
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({
+      isDownloadable: false,
+      downloadPercentage: false,
+      downloadSpeed: false,
+    });
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
 
   const table = useReactTable({
     data: props.data,
@@ -162,15 +173,29 @@ export function DataTable<TData, TValue>(props: {
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
       columnVisibility,
+      columnFilters,
     },
   });
 
   return (
     <div>
       <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter languages..."
+          value={
+            (table.getColumn("language")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("language")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm text-black"
+        />
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="default" className="ml-auto">
