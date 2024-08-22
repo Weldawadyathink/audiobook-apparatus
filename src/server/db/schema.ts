@@ -1,4 +1,10 @@
 import { int, text, sqliteTable, integer } from "drizzle-orm/sqlite-core";
+import { sql } from "drizzle-orm";
+
+export const migrations = sqliteTable("migrations", {
+  name: text("name"),
+  appliedAt: text("appliedAt").default(sql`CURRENT_TIMESTAMP`),
+});
 
 export const book = sqliteTable("book", {
   id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
