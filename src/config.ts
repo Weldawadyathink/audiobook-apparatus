@@ -31,6 +31,17 @@ export const configObjectValidator = z.object({
       value: z.coerce.number().int().min(1).default(5),
     }),
   ),
+
+  audibleRefreshInterval: z.preprocess(
+    (input) => input || {},
+    z.object({
+      userFacingName: z.preprocess(
+        () => "Audible Refresh Interval",
+        z.string(),
+      ),
+      value: z.coerce.number().int().min(1).default(5),
+    }),
+  ),
 });
 
 export function getConfig() {
