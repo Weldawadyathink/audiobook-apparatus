@@ -52,6 +52,7 @@ COPY --from=modules /temp/prod/node_modules ./node_modules
 VOLUME /config
 ENV DATABASE_URL file:/config/db.sqlite
 ENV CONFIG_FILE /config/config.yaml
+ENV AUDIBLE_CONFIG_DIR /config
 
 # run the app
 EXPOSE 3000/tcp
