@@ -3,5 +3,4 @@ import { getConfig, setConfig } from "@/config";
 
 export function register() {
   refreshAudibleJobSchedule();
-  setConfig(getConfig());
 }

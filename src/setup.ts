@@ -2,6 +2,7 @@ import { db } from "@/server/db";
 import { migrations } from "@/server/db/schema";
 import fs from "node:fs";
 import { sql } from "drizzle-orm";
+import { getConfig, setConfig } from "@/config";
 
 async function applyMigrations() {
   const migrationsFolder = "./drizzle";
@@ -35,3 +36,5 @@ async function applyMigrations() {
 }
 
 await applyMigrations();
+
+setConfig(getConfig());
