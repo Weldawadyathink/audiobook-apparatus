@@ -10,6 +10,15 @@ const config = {
   experimental: {
     instrumentationHook: true,
   },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      // Required to import node:fs
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      config.target = "node";
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return config;
+  },
 };
 
 export default config;
