@@ -6,12 +6,14 @@
     "serve": "deno run --allow-net --allow-read https://deno.land/std@0.157.0/http/file_server.ts dist/"
   },
   "imports": {
+    "@trpc/client": "npm:@trpc/client@^10.45.2",
     "react": "npm:react@^18.3.1",
     "react-dom": "npm:react-dom@^18.3.1"
   },
   "compilerOptions": {
-    "lib": ["ESNext","dom"],
+    "lib": ["ESNext", "dom"],
     "jsx": "react-jsx",
     "jsxImportSource": "https://esm.sh/react@18.2.0"
-  }
+  },
+  "nodeModulesDir": "auto"
 }

@@ -1,9 +1,12 @@
 {
   "imports": {
-    "hono": "jsr:@hono/hono@^4.6.3"
+    "@hono/trpc-server": "npm:@hono/trpc-server@^0.3.2",
+    "@trpc/server": "npm:@trpc/server@^10.45.2",
+    "hono": "jsr:@hono/hono@^4.6.3",
+    "zod": "npm:zod@^3.23.8"
   },
   "tasks": {
-    "start": "deno run --allow-net main.ts"
+    "dev": "deno serve --allow-net --allow-env main.ts"
   },
   "compilerOptions": {
     "jsx": "precompile",

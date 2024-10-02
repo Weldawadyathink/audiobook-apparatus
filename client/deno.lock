@@ -1,6 +1,7 @@
 {
   "version": "4",
   "specifiers": {
+    "npm:@trpc/client@^10.45.2": "10.45.2_@trpc+server@10.45.2",
     "npm:@types/node@*": "22.2.0",
     "npm:@vitejs/plugin-react-swc@^3.5.0": "3.7.1_vite@5.4.8__@types+node@22.2.0_@types+node@22.2.0",
     "npm:react-dom@^18.2.0": "18.3.1_react@18.3.1",
@@ -184,6 +185,15 @@
         "@swc/counter"
       ]
     },
+    "@trpc/client@10.45.2_@trpc+server@10.45.2": {
+      "integrity": "sha512-ykALM5kYWTLn1zYuUOZ2cPWlVfrXhc18HzBDyRhoPYN0jey4iQHEFSEowfnhg1RvYnrAVjNBgHNeSAXjrDbGwg==",
+      "dependencies": [
+        "@trpc/server"
+      ]
+    },
+    "@trpc/server@10.45.2": {
+      "integrity": "sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg=="
+    },
     "@types/estree@1.0.6": {
       "integrity": "sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw=="
     },
@@ -324,6 +334,7 @@
   },
   "workspace": {
     "dependencies": [
+      "npm:@trpc/client@^10.45.2",
       "npm:react-dom@^18.3.1",
       "npm:react@^18.3.1"
     ]
