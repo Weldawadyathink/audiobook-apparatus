@@ -2,11 +2,12 @@
   "imports": {
     "@hono/trpc-server": "npm:@hono/trpc-server@^0.3.2",
     "@trpc/server": "npm:@trpc/server@^10.45.2",
-    "hono": "jsr:@hono/hono@^4.6.3",
+    "hono": "npm:hono@^4.6.3",
     "zod": "npm:zod@^3.23.8"
   },
   "tasks": {
-    "dev": "deno serve --allow-net --allow-env main.ts"
+    "dev": "deno serve --watch --port 8000 --allow-read --allow-net --allow-env main.ts",
+    "serve": "deno serve --port 8000 --no-check --allow-read --allow-net --allow-env main.ts"
   },
   "compilerOptions": {
     "jsx": "precompile",

@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { serveStatic } from "hono/deno";
 import { trpcServer } from "@hono/trpc-server";
 import { appRouter } from "./router.ts";
 
@@ -9,6 +10,13 @@ app.use(
   trpcServer({
     endpoint: "/trpc",
     router: appRouter,
+  }),
+);
+
+app.use(
+  "*",
+  serveStatic({
+    root: "./dist/",
   }),
 );
 
