@@ -23,9 +23,9 @@ FROM base AS builder
 COPY --from=modules /temp/dev/node_modules node_modules
 COPY . .
 
-ENV NODE_ENV production
-ENV DATABASE_URL "file:./db.sqlite"
-ENV SKIP_ENV_VALIDATION 1
+ENV NODE_ENV=production
+ENV DATABASE_URL="file:./db.sqlite"
+ENV SKIP_ENV_VALIDATION=1
 
 RUN bun test
 RUN bun run build
@@ -50,9 +50,9 @@ COPY start_server.sh .
 COPY --from=modules /temp/prod/node_modules ./node_modules
 
 VOLUME /config
-ENV DATABASE_URL file:/config/db.sqlite
-ENV CONFIG_FILE /config/config.yaml
-ENV AUDIBLE_CONFIG_DIR /config
+ENV DATABASE_URL=file:/config/db.sqlite
+ENV CONFIG_FILE=/config/config.yaml
+ENV AUDIBLE_CONFIG_DIR=/config
 
 # run the app
 EXPOSE 3000/tcp
