@@ -5,6 +5,7 @@ import { type Metadata } from "next";
 import { TRPCReactProvider } from "@/trpc/react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import React from "react";
 
 const fontSans = FontSans({
   subsets: ["latin"],
