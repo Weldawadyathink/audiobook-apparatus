@@ -9,7 +9,9 @@
     "npm:react@^18.2.0": "18.3.1",
     "npm:react@^18.3.1": "18.3.1",
     "npm:vite@*": "5.4.8_@types+node@22.2.0",
-    "npm:vite@^5.2.10": "5.4.8_@types+node@22.2.0"
+    "npm:vite@5.4.8": "5.4.8_@types+node@22.2.0",
+    "npm:vite@^5.2.10": "5.4.8_@types+node@22.2.0",
+    "npm:vite@^5.4.8": "5.4.8_@types+node@22.2.0"
   },
   "npm": {
     "@esbuild/aix-ppc64@0.21.5": {
@@ -336,7 +338,8 @@
     "dependencies": [
       "npm:@trpc/client@^10.45.2",
       "npm:react-dom@^18.3.1",
-      "npm:react@^18.3.1"
+      "npm:react@^18.3.1",
+      "npm:vite@^5.4.8"
     ]
   }
 }
