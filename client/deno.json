@@ -5,10 +5,14 @@
     "preview": "vite preview"
   },
   "imports": {
+    "@tanstack/react-query": "npm:@tanstack/react-query@^4.36.1",
     "@trpc/client": "npm:@trpc/client@^10.45.2",
+    "@trpc/react-query": "npm:@trpc/react-query@^10.45.2",
+    "@trpc/server": "npm:@trpc/server@^10.45.2",
     "react": "npm:react@^18.3.1",
     "react-dom": "npm:react-dom@^18.3.1",
-    "vite": "npm:vite@^5.4.8"
+    "vite": "npm:vite@^5.4.8",
+    "zod": "npm:zod@^3.23.8"
   },
   "compilerOptions": {
     "lib": ["ESNext", "dom"],

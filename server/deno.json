@@ -1,6 +1,7 @@
 {
   "imports": {
     "@hono/trpc-server": "npm:@hono/trpc-server@^0.3.2",
+    "@trpc/client": "npm:@trpc/client@^10.45.2",
     "@trpc/server": "npm:@trpc/server@^10.45.2",
     "hono": "npm:hono@^4.6.3",
     "zod": "npm:zod@^3.23.8"

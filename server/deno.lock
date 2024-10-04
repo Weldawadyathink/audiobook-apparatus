@@ -2,6 +2,7 @@
   "version": "4",
   "specifiers": {
     "npm:@hono/trpc-server@~0.3.2": "0.3.2_@trpc+server@10.45.2_hono@4.6.3",
+    "npm:@trpc/client@^10.45.2": "10.45.2_@trpc+server@10.45.2",
     "npm:@trpc/server@^10.45.2": "10.45.2",
     "npm:hono@^4.6.3": "4.6.3",
     "npm:zod@^3.23.8": "3.23.8"
@@ -12,6 +13,12 @@
       "dependencies": [
         "@trpc/server",
         "hono"
+      ]
+    },
+    "@trpc/client@10.45.2_@trpc+server@10.45.2": {
+      "integrity": "sha512-ykALM5kYWTLn1zYuUOZ2cPWlVfrXhc18HzBDyRhoPYN0jey4iQHEFSEowfnhg1RvYnrAVjNBgHNeSAXjrDbGwg==",
+      "dependencies": [
+        "@trpc/server"
       ]
     },
     "@trpc/server@10.45.2": {
@@ -27,6 +34,7 @@
   "workspace": {
     "dependencies": [
       "npm:@hono/trpc-server@~0.3.2",
+      "npm:@trpc/client@^10.45.2",
       "npm:@trpc/server@^10.45.2",
       "npm:hono@^4.6.3",
       "npm:zod@^3.23.8"
