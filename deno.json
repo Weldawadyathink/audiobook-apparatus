@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "build": "docker build -t audiobook-apparatus:latest . ",
+    "run": "deno task build && docker run -it --rm audiobook-apparatus:latest"
+  }
+}
