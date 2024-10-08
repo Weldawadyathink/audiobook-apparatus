@@ -2,17 +2,7 @@ import { Hono } from "hono";
 import { serveStatic } from "hono/deno";
 import { trpcServer } from "@hono/trpc-server";
 import { cors } from "hono/cors";
-import { publicProcedure, router } from "./trpc.ts";
-import z from "zod";
-import { db } from "./db/index.ts";
-import { migrations } from "./db/schema.ts";
-
-const appRouter = router({
-  greeting: publicProcedure.query(() => "hello tRPC v10!"),
-  hello: publicProcedure.input(z.string().nullish()).query(({ input }) => {
-    return `Hello, ${input ?? "World"}!`;
-  }),
-});
+import { appRouter } from "./routers/_app.ts";
 
 export type AppRouter = typeof appRouter;
 
@@ -34,15 +24,5 @@ app.use(
     root: "./dist/",
   }),
 );
-
-const appliedMigrations: string[] = await db
-  .select({
-    name: migrations.name,
-    appliedAt: migrations.appliedAt,
-  })
-  .from(migrations)
-  .then((result) => result.map((item) => item.name!))
-  .catch(() => []);
-console.log(appliedMigrations);
 
 export default app;
