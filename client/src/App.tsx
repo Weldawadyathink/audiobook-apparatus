@@ -1,12 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
-import { api } from "./lib/api.ts";
+import { trpc } from "./lib/trpc.ts";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
-    api.createClient({
+    trpc.createClient({
       links: [
         httpBatchLink({
           url:
@@ -22,9 +22,8 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <api.Provider client={trpcClient} queryClient={queryClient}>
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <Test />
         <img src="/vite-deno.svg" alt="Vite with Deno" />
         <div>
           <a href="https://vitejs.dev" target="_blank">
@@ -51,7 +50,7 @@ function App() {
           Click on the Vite and React logos to learn more
         </p>
       </QueryClientProvider>
-    </api.Provider>
+    </trpc.Provider>
   );
 }
 
