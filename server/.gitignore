@@ -1,0 +1,13 @@
+### Deno template
+/.idea/
+/.vscode/
+
+/node_modules
+
+db.sqlite
+
+.env
+*.orig
+*.pyc
+*.swp
+

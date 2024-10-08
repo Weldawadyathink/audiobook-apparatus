@@ -1,17 +1,23 @@
 {
   "imports": {
     "@hono/trpc-server": "npm:@hono/trpc-server@^0.3.2",
+    "@libsql/client": "npm:@libsql/client@^0.14.0",
+    "@std/dotenv": "jsr:@std/dotenv@^0.225.2",
     "@trpc/client": "npm:@trpc/client@^10.45.2",
     "@trpc/server": "npm:@trpc/server@^10.45.2",
+    "drizzle-kit": "npm:drizzle-kit@^0.25.0",
+    "drizzle-orm": "npm:drizzle-orm@^0.34.1",
     "hono": "npm:hono@^4.6.3",
     "zod": "npm:zod@^3.23.8"
   },
   "tasks": {
-    "dev": "deno serve --watch --port 8000 --allow-read --allow-net --allow-env main.ts",
-    "serve": "deno serve --port 8000 --no-check --allow-read --allow-net --allow-env main.ts"
+    "dev": "deno serve --watch --port 8000 --allow-ffi --allow-read --allow-net --allow-env main.ts",
+    "serve": "deno serve --port 8000 --no-check --allow-ffi --allow-read --allow-net --allow-env main.ts",
+    "db:generate": "drizzle-kit generate"
   },
   "compilerOptions": {
     "jsx": "precompile",
     "jsxImportSource": "hono/jsx"
-  }
+  },
+  "nodeModulesDir": "auto"
 }
