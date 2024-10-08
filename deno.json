@@ -1,6 +1,7 @@
 {
   "tasks": {
     "build": "docker build -t audiobook-apparatus:latest . ",
+    "build:clean": "docker build --no-cache -t audiobook-apparatus:latest .",
     "buildx": "docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 .",
     "run": "deno task build && docker run -it --rm audiobook-apparatus:latest"
   }
