@@ -3,7 +3,7 @@ import { drizzle } from "drizzle-orm/libsql";
 import { sql } from "drizzle-orm";
 import fs from "node:fs";
 import * as schema from "./schema.ts";
-import "jsr:@std/dotenv/load";
+import "@std/dotenv/load";
 
 const globalForDb = globalThis as unknown as {
   client: Client | undefined;

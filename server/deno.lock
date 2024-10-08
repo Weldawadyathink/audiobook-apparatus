@@ -5,8 +5,8 @@
     "jsr:@std/dotenv@~0.225.2": "0.225.2",
     "npm:@hono/trpc-server@~0.3.2": "0.3.2_@trpc+server@10.45.2_hono@4.6.3",
     "npm:@libsql/client@0.14": "0.14.0",
-    "npm:@trpc/client@^10.45.2": "10.45.2_@trpc+server@10.45.2",
     "npm:@trpc/server@^10.45.2": "10.45.2",
+    "npm:@trpc/server@^11.0.0-rc.566": "11.0.0-rc.566",
     "npm:@types/node@*": "22.5.4",
     "npm:drizzle-kit@0.25": "0.25.0_esbuild@0.19.12",
     "npm:drizzle-kit@0.25.0": "0.25.0_esbuild@0.19.12",
@@ -180,7 +180,7 @@
     "@hono/trpc-server@0.3.2_@trpc+server@10.45.2_hono@4.6.3": {
       "integrity": "sha512-dTKDrSldjBn0hi9FjHOGdiHgMCWPoW5NaBUTQRNLyVL9JcJJu9oiwTFoIscPFxc9CF2rAeA8aRGHoFJK+A8cLw==",
       "dependencies": [
-        "@trpc/server",
+        "@trpc/server@10.45.2",
         "hono"
       ]
     },
@@ -243,14 +243,11 @@
     "@neon-rs/load@0.0.4": {
       "integrity": "sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw=="
     },
-    "@trpc/client@10.45.2_@trpc+server@10.45.2": {
-      "integrity": "sha512-ykALM5kYWTLn1zYuUOZ2cPWlVfrXhc18HzBDyRhoPYN0jey4iQHEFSEowfnhg1RvYnrAVjNBgHNeSAXjrDbGwg==",
-      "dependencies": [
-        "@trpc/server"
-      ]
-    },
     "@trpc/server@10.45.2": {
       "integrity": "sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg=="
+    },
+    "@trpc/server@11.0.0-rc.566": {
+      "integrity": "sha512-AcCE9zqp7aXb0o4ehugELVk45XalzYi+wZYdOq+byLJq9yVeI5wcQaKA18Ux51hIyu3OFCaq9UwYa1a0P7IaZg=="
     },
     "@types/node@22.5.4": {
       "integrity": "sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==",
@@ -492,8 +489,7 @@
       "jsr:@std/dotenv@~0.225.2",
       "npm:@hono/trpc-server@~0.3.2",
       "npm:@libsql/client@0.14",
-      "npm:@trpc/client@^10.45.2",
-      "npm:@trpc/server@^10.45.2",
+      "npm:@trpc/server@^11.0.0-rc.566",
       "npm:drizzle-kit@0.25",
       "npm:drizzle-orm@~0.34.1",
       "npm:fluent-ffmpeg@^2.1.3",

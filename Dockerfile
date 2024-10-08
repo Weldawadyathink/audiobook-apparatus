@@ -1,12 +1,12 @@
-FROM denoland/deno:debian-2.0.0-rc.9 AS base
+FROM denoland/deno:debian-2.0.0-rc.10 AS base
 LABEL authors="Weldawadyathink"
 RUN mkdir -p /app
 WORKDIR /app
 
 # Install non-js dependencies
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt update && \
-    apt install -y ffmpeg python3 python3-pip && \
+RUN apt-get update && \
+    apt-get install -y ffmpeg python3 python3-pip && \
     pip install --break-system-packages audible-cli && \
     rm -rf /var/lib/apt/lists/*
 

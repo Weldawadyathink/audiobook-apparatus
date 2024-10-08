@@ -14,7 +14,7 @@ app.use(
   "/trpc/*",
   trpcServer({
     endpoint: "/trpc",
-    router: appRouter,
+    router: appRouter as any, // Hono tRPC adapter doesn't like tRPC v11
   }),
 );
 
