@@ -1,13 +1,14 @@
-import { createRouter } from "../trpc.ts";
+import { createRouter, publicProcedure } from "../trpc.ts";
 import { audibleRouter } from "./audible.ts";
 import { configRouter } from "./config.ts";
+import { z } from "zod";
 
 export const appRouter = createRouter({
-  audible: audibleRouter, // put procedures under "user" namespace
-  config: configRouter, // put procedures under "post" namespace
+  audible: audibleRouter,
+  config: configRouter,
+  hello: publicProcedure.input(z.string().nullish()).query(({ input }) => {
+    return `hello ${input ?? "world"}`;
+  }),
 });
-
-// You can then access the merged route with
-// http://localhost:3000/trpc/<NAMESPACE>.<PROCEDURE>
 
 export type AppRouter = typeof appRouter;

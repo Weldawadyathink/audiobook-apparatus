@@ -3,9 +3,7 @@
   "specifiers": {
     "jsr:@std/dotenv@*": "0.225.2",
     "jsr:@std/dotenv@~0.225.2": "0.225.2",
-    "npm:@hono/trpc-server@~0.3.2": "0.3.2_@trpc+server@10.45.2_hono@4.6.3",
     "npm:@libsql/client@0.14": "0.14.0",
-    "npm:@trpc/server@^10.45.2": "10.45.2",
     "npm:@trpc/server@^11.0.0-rc.566": "11.0.0-rc.566",
     "npm:@types/node@*": "22.5.4",
     "npm:drizzle-kit@0.25": "0.25.0_esbuild@0.19.12",
@@ -177,13 +175,6 @@
     "@esbuild/win32-x64@0.19.12": {
       "integrity": "sha512-T1QyPSDCyMXaO3pzBkF96E8xMkiRYbUEZADd29SyPGabqxMViNoii+NcK7eWJAEoU6RZyEm5lVSIjTmcdoB9HA=="
     },
-    "@hono/trpc-server@0.3.2_@trpc+server@10.45.2_hono@4.6.3": {
-      "integrity": "sha512-dTKDrSldjBn0hi9FjHOGdiHgMCWPoW5NaBUTQRNLyVL9JcJJu9oiwTFoIscPFxc9CF2rAeA8aRGHoFJK+A8cLw==",
-      "dependencies": [
-        "@trpc/server@10.45.2",
-        "hono"
-      ]
-    },
     "@libsql/client@0.14.0": {
       "integrity": "sha512-/9HEKfn6fwXB5aTEEoMeFh4CtG0ZzbncBb1e++OCdVpgKZ/xyMsIVYXm0w7Pv4RUel803vE6LwniB3PqD72R0Q==",
       "dependencies": [
@@ -242,9 +233,6 @@
     },
     "@neon-rs/load@0.0.4": {
       "integrity": "sha512-kTPhdZyTQxB+2wpiRcFWrDcejc4JI6tkPuS7UZCG4l6Zvc5kU/gGQ/ozvHTh1XR5tS+UlfAfGuPajjzQjCiHCw=="
-    },
-    "@trpc/server@10.45.2": {
-      "integrity": "sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg=="
     },
     "@trpc/server@11.0.0-rc.566": {
       "integrity": "sha512-AcCE9zqp7aXb0o4ehugELVk45XalzYi+wZYdOq+byLJq9yVeI5wcQaKA18Ux51hIyu3OFCaq9UwYa1a0P7IaZg=="
@@ -487,7 +475,6 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/dotenv@~0.225.2",
-      "npm:@hono/trpc-server@~0.3.2",
       "npm:@libsql/client@0.14",
       "npm:@trpc/server@^11.0.0-rc.566",
       "npm:drizzle-kit@0.25",

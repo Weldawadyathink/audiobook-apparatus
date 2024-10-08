@@ -1,6 +1,5 @@
 {
   "imports": {
-    "@hono/trpc-server": "npm:@hono/trpc-server@^0.3.2",
     "@libsql/client": "npm:@libsql/client@^0.14.0",
     "@std/dotenv": "jsr:@std/dotenv@^0.225.2",
     "@trpc/server": "npm:@trpc/server@^11.0.0-rc.566",
