@@ -201,8 +201,8 @@ export function downloadItem(
 
     const progressFunctionPromises: Promise<unknown>[] = [];
 
-    // const newEnv = process.env;
-    // newEnv.PYTHONUNBUFFERED = "true";
+    const newEnv = Deno.env.toObject();
+    newEnv.PYTHONUNBUFFERED = "true";
     const audible = spawn(
       "audible",
       [
@@ -215,12 +215,10 @@ export function downloadItem(
         "--no-confirm",
         "--overwrite",
       ],
-      { stdio: ["ignore", "pipe", "pipe"] },
-      // { stdio: ["ignore", "pipe", "pipe"], env: newEnv },
+      { stdio: ["ignore", "pipe", "pipe"], env: newEnv },
     );
 
     audible.stdout.on("data", (data) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
       const str = data.toString() as string;
       const voucher = /Voucher file saved to (.*)./.exec(str);
       if (voucher) {
@@ -240,7 +238,6 @@ export function downloadItem(
     audible.stderr.on("data", (data) => {
       // tqdm prints to stderr for some reason
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-call
       const str: string = data.toString() as string;
       const newPercentStr = /(\d{1,3})%\|/.exec(str)?.[1];
       if (!newPercentStr) {
