@@ -188,7 +188,8 @@ export function DataTable(props: {
           value={
             (table.getColumn("language")?.getFilterValue() as string) ?? ""
           }
-          onChange={(event) =>
+          // deno-lint-ignore no-explicit-any
+          onChange={(event: any) =>
             table.getColumn("language")?.setFilterValue(event.target.value)
           }
           className="max-w-sm text-black"
@@ -210,7 +211,9 @@ export function DataTable(props: {
                     key={column.id}
                     className="capitalize"
                     checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(value)}
+                    onCheckedChange={(value: boolean) =>
+                      column.toggleVisibility(value)
+                    }
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
