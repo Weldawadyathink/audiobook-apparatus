@@ -1,15 +1,7 @@
-import "./App.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
-import { api } from "./utils/api.ts";
-
-function Test() {
-  const query = api.book.test.useQuery();
-  console.log(query);
-
-  return <span>{query.data}</span>;
-}
+import { api } from "./lib/api.ts";
 
 function App() {
   const [queryClient] = useState(() => new QueryClient());
