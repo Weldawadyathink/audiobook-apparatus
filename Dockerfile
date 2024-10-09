@@ -1,4 +1,4 @@
-FROM denoland/deno:debian-2.0.0-rc.10 AS base
+FROM denoland/deno:debian AS base
 LABEL authors="Weldawadyathink"
 RUN mkdir -p /app
 WORKDIR /app
@@ -11,7 +11,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 FROM base AS client
-COPY client/deno.json client/deno.lock ./
+COPY client/package.json client/deno.lock ./
 RUN deno install --allow-scripts --frozen=true
 COPY client/ ./
 RUN deno task build

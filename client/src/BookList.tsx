@@ -2,6 +2,7 @@ import { trpc } from "./lib/trpc.ts";
 import { DataTable, columns } from "./components/DataTable.tsx";
 import { Button } from "./components/ui/button.tsx";
 import { LoadingSpinner } from "./components/LoadingSpinner.tsx";
+import React from "react";
 
 export function BookList() {
   const library = trpc.audible.getLibrary.useQuery(undefined, {
