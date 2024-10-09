@@ -1,0 +1,1 @@
+Tailwind was being funky with a pure deno vite project. So this uses the package.json support from deno. For now, install packages with npm install, delete node_modules and package-lock.json, then deno install. 
