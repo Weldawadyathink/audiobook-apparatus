@@ -14,8 +14,8 @@
     "zod": "npm:zod@^3.23.8"
   },
   "tasks": {
-    "dev": "deno serve --watch --port 8000 --allow-sys --allow-ffi --allow-read --allow-net --allow-env main.ts",
-    "serve": "deno serve --port 8000 --no-check --allow-sys --allow-ffi --allow-read --allow-net --allow-env main.ts",
+    "dev": "deno serve --watch --port 8000 --allow-run --allow-sys --allow-ffi --allow-read --allow-net --allow-env main.ts",
+    "serve": "deno serve --port 8000 --no-check --allow-run --allow-sys --allow-ffi --allow-read --allow-net --allow-env main.ts",
     "db:generate": "drizzle-kit generate"
   },
   "compilerOptions": {
