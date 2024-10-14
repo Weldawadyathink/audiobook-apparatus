@@ -52,6 +52,7 @@ export const audibleRouter = createRouter({
   }),
   downloadBook: publicProcedure.input(z.string()).query(({ input }) => {
     void downloadAudibleBook(input);
+    console.log(`Starting download for ${input}`);
     return "Download started";
   }),
   downloadAllBooks: publicProcedure.query(async () => {

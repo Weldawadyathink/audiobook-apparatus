@@ -157,6 +157,7 @@ export async function downloadAudibleBook(asin: string) {
   }
 
   // Preconditions complete, actual processing begins
+  console.log(`Validated inputs, downloading ${asin}`);
 
   await db
     .update(book)

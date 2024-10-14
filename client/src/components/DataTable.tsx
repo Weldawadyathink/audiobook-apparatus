@@ -25,9 +25,10 @@ import {
   TableHeader,
   TableRow,
 } from "./ui/table.tsx";
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Download } from "lucide-react";
 import { Input } from "./ui/input.tsx";
 import { type LibraryItem } from "../../../server/routers/audible.ts";
+import { trpc, trpcVanillaClient } from "../lib/trpc.ts";
 
 export const columns: ColumnDef<LibraryItem>[] = [
   {
@@ -180,6 +181,10 @@ export function DataTable(props: {
     },
   });
 
+  function downloadBook(id: string) {
+    void trpcVanillaClient.audible.downloadBook.query(id);
+  }
+
   return (
     <div>
       <div className="flex items-center py-4">
@@ -227,6 +232,7 @@ export function DataTable(props: {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
+                <TableHead>Download</TableHead>
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead key={header.id}>
@@ -249,6 +255,12 @@ export function DataTable(props: {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
+                  <Button
+                    className="mx-auto my-auto"
+                    onClick={() => downloadBook(row.original.asin!)}
+                  >
+                    <Download />
+                  </Button>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
