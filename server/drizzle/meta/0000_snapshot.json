@@ -1,0 +1,38 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "af804b78-fe18-42e1-accc-cca984a5c7d4",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "migrations": {
+      "name": "migrations",
+      "columns": {
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "appliedAt": {
+          "name": "appliedAt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}

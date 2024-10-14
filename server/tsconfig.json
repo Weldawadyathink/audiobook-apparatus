@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "moduleResolution": "nodenext",
+    "target": "esnext",
+    "module": "es2022",
+    "allowImportingTsExtensions": true,
     "strict": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"
