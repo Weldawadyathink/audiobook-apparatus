@@ -5,13 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="19c08103-8b2f-4ca0-9c06-1cfa3d0748e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/bun.lockb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/bun.lockb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bun.lockb" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lockb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/drizzle.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/db/database.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/db/schema.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routers/_app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routers/audible.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/routers/config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/trpc.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +83,7 @@
     "nodejs_package_manager_path": "npm",
     "prettierjs.PrettierConfiguration.Package": "/Users/Spenser/Programming/audiobook-apparatus/node_modules/prettier",
     "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "/Users/Spenser/Programming/audiobook-apparatus/node_modules/typescript/lib",
+    "ts.external.directory.path": "/Users/Spenser/Programming/audiobook-apparatus/server/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -152,7 +154,7 @@
       <workItem from="1728194590172" duration="3482000" />
       <workItem from="1728378480676" duration="16396000" />
       <workItem from="1728402021888" duration="26275000" />
-      <workItem from="1728930353736" duration="7432000" />
+      <workItem from="1728930353736" duration="8208000" />
     </task>
     <servers />
   </component>
