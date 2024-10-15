@@ -2,12 +2,12 @@
   "name": "audiobook-apparatus",
   "private": "true",
   "type": "module",
-  "workspaces": [
-    "server",
-    "client"
-  ],
   "scripts": {
-    "clean": "rm -rf node_modules server/node_modules client/node_modules bun.lockb server/bun.lockb client/bun.lockb"
+    "clean": "rm -rf node_modules server/node_modules client/node_modules bun.lockb server/bun.lockb client/bun.lockb",
+    "build": "docker build -t audiobook-apparatus:latest . ",
+    "build:clean": "docker build --no-cache -t audiobook-apparatus:latest .",
+    "buildx": "docker buildx build --platform linux/arm/v7,linux/arm64/v8,linux/amd64 .",
+    "run": "bun run build && docker run -it --rm audiobook-apparatus:latest"
   },
   "dependencies": {
     "eslint": "^9.12.0",

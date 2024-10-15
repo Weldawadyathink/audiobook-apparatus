@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --hot src/index.ts",
-    "start": "bun run src/index.ts",
+    "serve": "bun run src/index.ts",
     "db:generate": "drizzle-kit generate",
     "check": "tsc -b"
   },

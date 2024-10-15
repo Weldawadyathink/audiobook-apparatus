@@ -5,37 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="19c08103-8b2f-4ca0-9c06-1cfa3d0748e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/jsLinters/eslint.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/components.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/postcss.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/BookList.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/Layout.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/DataTable.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/LoadingSpinner.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/ui/button.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/ui/dropdown-menu.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/ui/input.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/components/ui/table.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/lib/trpc.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/lib/utils.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/tailwind.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/.eslintrc.cjs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/bun.lockb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/bun.lockb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bun.lockb" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lockb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/public/vite.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/App.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/assets/react.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/tsconfig.app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/utils/audible-book-manager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/utils/audible-book-manager.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/utils/audible-cli.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/utils/audible-cli.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,6 +43,7 @@
   }
 }</component>
   <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
     <dismissed value="$PROJECT_DIR$/server/package.json" />
   </component>
   <component name="ProblemsViewState">
@@ -93,7 +70,7 @@
     "git-widget-placeholder": "bun-rewrite",
     "ignore_missing_gitignore": "true",
     "last.edited.regexp": "24.6M/12.6M",
-    "last_opened_file_path": "/Users/Spenser/Programming/audiobook-apparatus/client",
+    "last_opened_file_path": "/Users/Spenser/Programming/audiobook-apparatus",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
@@ -115,11 +92,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/client" />
       <recent name="$PROJECT_DIR$/server" />
       <recent name="$PROJECT_DIR$/server/src" />
       <recent name="$PROJECT_DIR$/vite-project/src" />
-      <recent name="$PROJECT_DIR$/vite-project/src/lib" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -175,7 +152,7 @@
       <workItem from="1728194590172" duration="3482000" />
       <workItem from="1728378480676" duration="16396000" />
       <workItem from="1728402021888" duration="26275000" />
-      <workItem from="1728930353736" duration="5298000" />
+      <workItem from="1728930353736" duration="7432000" />
     </task>
     <servers />
   </component>
