@@ -181,7 +181,7 @@ export async function downloadAudibleBook(asin: string) {
     }) => Promise<unknown>,
     retryNumber = 0,
   ): Promise<ExtendedDownloadType> {
-    const tempFolder = `${Deno.cwd()}/tmp/${crypto.randomUUID()}`;
+    const tempFolder = `${process.cwd}/tmp/${crypto.randomUUID()}`;
     fs.mkdirSync(tempFolder, { recursive: true });
     try {
       const result = await downloadItem(asin, tempFolder, progressFunction);
@@ -222,7 +222,7 @@ export async function downloadAudibleBook(asin: string) {
     .set({ status: "Processing" })
     .where(eq(book.asin, asin));
 
-  const outputDir = `${Deno.cwd()}/output/`;
+  const outputDir = `${process.cwd}/output/`;
   const { name: newFilename } = Path.parse(downloadResult.filename);
   const outputFilepath = `${outputDir}/${newFilename}.m4b`;
 

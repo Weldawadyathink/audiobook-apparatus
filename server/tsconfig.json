@@ -2,10 +2,12 @@
   "compilerOptions": {
     "moduleResolution": "nodenext",
     "target": "esnext",
-    "module": "es2022",
+    "module": "nodenext",
     "allowImportingTsExtensions": true,
+    "noEmit": true,
     "strict": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx"
+    "jsxImportSource": "hono/jsx",
+    "esModuleInterop": true
   }
 }

@@ -201,7 +201,7 @@ export function downloadItem(
 
     const progressFunctionPromises: Promise<unknown>[] = [];
 
-    const newEnv = Deno.env.toObject();
+    const newEnv = process.env;
     newEnv.PYTHONUNBUFFERED = "true";
     const audible = spawn(
       "audible",
