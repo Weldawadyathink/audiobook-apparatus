@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="19c08103-8b2f-4ca0-9c06-1cfa3d0748e6" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/server/drizzle.config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/db/database.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/db/schema.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/routers/_app.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/routers/audible.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/routers/config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/trpc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/eslint.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/lib/trpc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/lib/trpc.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,36 +58,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "deno.use.library": "true",
-    "git-widget-placeholder": "bun-rewrite",
-    "ignore_missing_gitignore": "true",
-    "last.edited.regexp": "24.6M/12.6M",
-    "last_opened_file_path": "/Users/Spenser/Programming/audiobook-apparatus",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "node",
-    "nodejs_package_manager_path": "npm",
-    "prettierjs.PrettierConfiguration.Package": "/Users/Spenser/Programming/audiobook-apparatus/node_modules/prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "/Users/Spenser/Programming/audiobook-apparatus/server/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;deno.use.library&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;bun-rewrite&quot;,
+    &quot;ignore_missing_gitignore&quot;: &quot;true&quot;,
+    &quot;last.edited.regexp&quot;: &quot;24.6M/12.6M&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/Spenser/Programming/audiobook-apparatus&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/Spenser/Programming/audiobook-apparatus/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/Spenser/Programming/audiobook-apparatus/server/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "denodo"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;denodo&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -155,6 +151,8 @@
       <workItem from="1728378480676" duration="16396000" />
       <workItem from="1728402021888" duration="26275000" />
       <workItem from="1728930353736" duration="8208000" />
+      <workItem from="1729078519786" duration="5000" />
+      <workItem from="1729101356572" duration="274000" />
     </task>
     <servers />
   </component>

@@ -11,7 +11,6 @@ function Layout() {
       links: [
         httpBatchLink({
           url:
-            // deno-lint-ignore no-explicit-any
             (import.meta as any).env.MODE === "development"
               ? "http://localhost:3000/trpc"
               : "/trpc",

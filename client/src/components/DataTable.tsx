@@ -27,7 +27,7 @@ import {
 } from "./ui/table.tsx";
 import { ArrowDown, ArrowUp, ArrowUpDown, Download } from "lucide-react";
 import { Input } from "./ui/input.tsx";
-import { type LibraryItem } from "server/src/routers/audible.ts";
+import { type LibraryItem } from "../../../server/src/routers/audible.ts";
 import { trpcVanillaClient } from "../lib/trpc.ts";
 
 export const columns: ColumnDef<LibraryItem>[] = [
@@ -193,7 +193,6 @@ export function DataTable(props: {
           value={
             (table.getColumn("language")?.getFilterValue() as string) ?? ""
           }
-          // deno-lint-ignore no-explicit-any
           onChange={(event: any) =>
             table.getColumn("language")?.setFilterValue(event.target.value)
           }
