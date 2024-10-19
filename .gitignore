@@ -1,3 +1,6 @@
+server/tmp
+server/db.sqlite
+
 client/node_modules
 server/node_modules
 node_modules
@@ -134,3 +137,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+server/db.sqlite

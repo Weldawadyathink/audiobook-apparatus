@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="19c08103-8b2f-4ca0-9c06-1cfa3d0748e6" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/eslint.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/client/eslint.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/Layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/Layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/lib/trpc.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/lib/trpc.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/db.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/server/db.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/utils/audible-book-manager.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/utils/audible-book-manager.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +151,8 @@
       <workItem from="1728402021888" duration="26275000" />
       <workItem from="1728930353736" duration="8208000" />
       <workItem from="1729078519786" duration="5000" />
-      <workItem from="1729101356572" duration="274000" />
+      <workItem from="1729101356572" duration="1298000" />
+      <workItem from="1729102672313" duration="2666000" />
     </task>
     <servers />
   </component>
